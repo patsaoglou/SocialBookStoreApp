@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Book Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 800px; /* Increased max-width */
+            padding: 40px; /* Increased padding */
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #128639fa;
+            margin-bottom: 40px;
+            font-size: 48px; /* Increased font size */
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            /* Adjust height here */
+            height: 150px;
+        }
+        .btn-container {
+            text-align: center; /* Center the button horizontally */
+        }
+        button {
+            background-color: #128639fa;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background-color: #128639fa;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Book Details</h1>
+        <form action="/book/addbookoffer" method="post" onsubmit="return validateForm()">
+            <label for="bookId">Book ID:</label>
+            <input type="text" id="bookId" name="bookId" th:value="${book.id}" required>
+            
+            <label for="title">Title:</label>
+            <input type="text" id="bookTitle" name="title" th:value="${book.bookTitle}" required>
+            
+            <label for="summary">Summary:</label>
+            <textarea id="summary" name="summary" th:value="${book.bookSummary}"required></textarea>            
+
+            <!-- Assuming requestingUsers is not editable in this form -->
+            
+            <div class="btn-container">
+                <button type="submit">Save</button>
+                <div id="error-msg" class="error"></div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            var inputs = document.querySelectorAll('input[required], textarea[required]');
+            var isValid = true;
+            var errorMsg = "";
+
+            inputs.forEach(function(input) {
+                if (!input.value) {
+                    isValid = false;
+                    errorMsg += "Please provide input for " + input.name + ".<br>";
+                }
+            });
+
+            if (!isValid) {
+                document.getElementById("error-msg").innerHTML = errorMsg;
+                return false;
+            } else {
+                document.getElementById("error-msg").innerHTML = "";
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>
