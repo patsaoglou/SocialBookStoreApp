@@ -1,5 +1,7 @@
 package com.SE2024.SocialBookStore.model;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,7 +15,13 @@ public class BookCategory {
 
     @Column(name="categoryName")
 	private String categoryName;
-
+    
+    @OneToMany
+    @JoinTable(name = "bookIsCategory",
+                joinColumns = @JoinColumn(name = "bookCategoryId", referencedColumnName = "bookCategoryId"),
+                inverseJoinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"))
+    private List<Book> books;
+    
     public BookCategory() {
     }
 
@@ -33,6 +41,4 @@ public class BookCategory {
         this.categoryName = categoryName;
     }   
 
-
-    // TODO list of books with the same category
 }
