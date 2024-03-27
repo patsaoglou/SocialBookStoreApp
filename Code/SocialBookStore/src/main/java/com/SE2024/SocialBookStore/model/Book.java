@@ -1,5 +1,8 @@
 package com.SE2024.SocialBookStore.model;
 
+import java.util.List;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +18,18 @@ public class Book {
 
     @Column(name="summary")
     private String bookSummary;
+    
+    @ManyToMany
+    @JoinTable(name = "authorWroteBook",
+                joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"),
+                inverseJoinColumns = @JoinColumn(name = "bookAuthorId", referencedColumnName = "bookAuthorId"))
+    private  Set<BookAuthor> authors;
+    
+    @ManyToOne
+    @JoinTable(name = "bookIsCategory",
+                joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"),
+                inverseJoinColumns = @JoinColumn(name = "bookCategoryId", referencedColumnName = "bookCategoryId"))
+    private BookCategory bookCategory;
 
     public Book() {
     }
@@ -26,6 +41,7 @@ public class Book {
     public String getBookTitle() {
         return bookTitle;
     }
+
 
     public String getBookSummary() {
         return bookSummary;
@@ -42,6 +58,22 @@ public class Book {
 
     public void setBookSummary(String bookSummary) {
         this.bookSummary = bookSummary;
+    }
+
+    public Set<BookAuthor> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<BookAuthor> authors) {
+        this.authors = authors;
+    }
+
+    public BookCategory getBookCategory() {
+        return bookCategory;
+    }
+
+    public void setBookCategory(BookCategory bookCategory) {
+        this.bookCategory = bookCategory;
     }
 
 }

@@ -16,12 +16,6 @@ public class BookCategory {
     @Column(name="categoryName")
 	private String categoryName;
     
-    @OneToMany
-    @JoinTable(name = "bookIsCategory",
-                joinColumns = @JoinColumn(name = "bookCategoryId", referencedColumnName = "bookCategoryId"),
-                inverseJoinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"))
-    private List<Book> books;
-    
     public BookCategory() {
     }
 

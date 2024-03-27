@@ -1,7 +1,5 @@
 package com.SE2024.SocialBookStore.model;
 
-import java.util.Set;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -18,13 +16,6 @@ public class BookAuthor {
 
     @Column(name="lastName")
 	private String lastName;
-
-    @ManyToMany
-    @JoinTable(name = "authorWrote",
-                joinColumns = @JoinColumn(name = "bookAuthorId", referencedColumnName = "bookAuthorId"),
-                inverseJoinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"))
-    private  Set<Book> authorWrote;
-
 
     public BookAuthor() {
     }

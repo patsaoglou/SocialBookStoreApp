@@ -33,19 +33,19 @@ public class UserProfile {
 	private String telephone;
     
     @OneToMany
-    @JoinTable(name = "bookOffers",
+    @JoinTable(name = "userOffersBook",
                joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userProfileId"),
                inverseJoinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"))
     private List <Book> bookOffers;
 
     @ManyToMany
-    @JoinTable(name = "authorPreferations",
+    @JoinTable(name = "userPrefersAuthor",
                 joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userProfileId"),
                 inverseJoinColumns = @JoinColumn(name = "bookAuthorId", referencedColumnName = "bookAuthorId"))
     private  Set<BookAuthor> favouriteBookAuthors;
 
     @ManyToMany
-    @JoinTable(name = "categoryPreferations",
+    @JoinTable(name = "userPrefersCategory",
                 joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userProfileId"),
                 inverseJoinColumns = @JoinColumn(name = "bookCategoryId", referencedColumnName = "bookCategoryId"))
     private  Set<BookCategory> favouriteBookCategories;
@@ -53,7 +53,31 @@ public class UserProfile {
     public UserProfile() {
     }
 
-	public void setId(int id) {
+	public List<Book> getBookOffers() {
+        return bookOffers;
+    }
+
+    public void setBookOffers(List<Book> bookOffers) {
+        this.bookOffers = bookOffers;
+    }
+
+    public Set<BookAuthor> getFavouriteBookAuthors() {
+        return favouriteBookAuthors;
+    }
+
+    public void setFavouriteBookAuthors(Set<BookAuthor> favouriteBookAuthors) {
+        this.favouriteBookAuthors = favouriteBookAuthors;
+    }
+
+    public Set<BookCategory> getFavouriteBookCategories() {
+        return favouriteBookCategories;
+    }
+
+    public void setFavouriteBookCategories(Set<BookCategory> favouriteBookCategories) {
+        this.favouriteBookCategories = favouriteBookCategories;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -107,6 +131,9 @@ public class UserProfile {
 
     public String getTelephone() {
         return telephone;
-    } 
+    }
 
+    public void addBookToBookOffersList(Book newBook){
+        bookOffers.add(newBook);
+    }
 }

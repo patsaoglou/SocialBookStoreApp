@@ -8,11 +8,11 @@ import com.SE2024.SocialBookStore.model.UserProfile;
 public interface UserProfileService {
     
     // public UserProfile retrieveuUserProfile(String username);
-    public UserProfile registerUserProfileData(UserProfile profileData);
+    public UserProfile registerUserProfileData(UserProfile profileData); //ok
     // public UserProfile changeUserProfileData(String username, UserProfile profileDataChanges);
     
-    // List<Book> retrieveBookOffers(String username);
-    // Book addBookOffer(String username, Book bookData);
+    List<Book> retrieveBookOffers(String username); // ok
+    Book addBookOffer(Book bookData, String username); // ok 
 
     // List<Book> searchBooks();
     // List<Book> recommendBooks(String username);

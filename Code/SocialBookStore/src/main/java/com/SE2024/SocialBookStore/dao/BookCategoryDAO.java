@@ -9,5 +9,5 @@ import com.SE2024.SocialBookStore.model.BookCategory;
 @Repository
 public interface BookCategoryDAO extends JpaRepository<BookCategory, Integer>{
     public BookCategory findById(int id);
-    public List<BookCategory> findByCategoryName(String name);
+    public BookCategory findByCategoryName(String name);
 }
