@@ -1,7 +1,5 @@
 package com.SE2024.SocialBookStore.model;
 
-import java.util.List;
-
 import jakarta.persistence.*;
 
 @Entity

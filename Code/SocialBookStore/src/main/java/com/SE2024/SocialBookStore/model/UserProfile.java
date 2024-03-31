@@ -140,4 +140,8 @@ public class UserProfile {
     public Boolean deleteOfferFromUser(Book bookToDelete){
         return bookOffers.remove(bookToDelete);
     }
+
+    public Boolean isBookInUserBookOffers(Book book){
+        return bookOffers.contains(book);
+    }
 }

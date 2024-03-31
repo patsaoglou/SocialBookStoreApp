@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.SE2024.SocialBookStore.dtos.BookRequestForm;
 import com.SE2024.SocialBookStore.dtos.DeleteBookForm;
 import com.SE2024.SocialBookStore.dtos.RegisterBookForm;
 import com.SE2024.SocialBookStore.model.Book;
+import com.SE2024.SocialBookStore.model.BookRequest;
 import com.SE2024.SocialBookStore.model.UserProfile;
+import com.SE2024.SocialBookStore.service.BookRequestService;
+import com.SE2024.SocialBookStore.service.BookService;
 import com.SE2024.SocialBookStore.service.UserProfileService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
-    UserProfileService service;
+    UserProfileService userService;
+    
+    @Autowired
+    BookService bookService;
+    
+    @Autowired
+    BookRequestService requestService;
     
     // @GetMapping("/register")
     // public String registerUser(Model model) {
@@ -36,7 +46,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserProfile profile) {
          try {
-            UserProfile userProfile = service.registerUserProfileData(profile);
+            UserProfile userProfile = userService.registerUserProfileData(profile);
             return ResponseEntity.ok("User profile registered successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -47,19 +57,42 @@ public class UserController {
     public ResponseEntity<String> addBookOffer(@RequestBody RegisterBookForm registerBookForm) {
          try {
 
-            Book registeredBook = service.addBookOffer(registerBookForm.getBook(), registerBookForm.getUsername());
+            Book registeredBook = bookService.addBookOffer(registerBookForm.getBook(), registerBookForm.getUsername());
             return ResponseEntity.ok("Added");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
+    @PostMapping("/requestabook")
+    public ResponseEntity<String> addBookRequest(@RequestBody BookRequestForm bookRequest) {
+         try {
 
+            requestService.requestBook(bookRequest.getBookId(), bookRequest.getUsername());
+            return ResponseEntity.ok("Added book request");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    
+
+
+    @DeleteMapping("/deletebookrequest")
+    public ResponseEntity<String> removeBookRequest(@RequestBody BookRequestForm bookRequest) {
+         try {
+
+            requestService.deleteBookRequest(bookRequest.getBookId(), bookRequest.getUsername());
+            return ResponseEntity.ok("Book request deleted");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @DeleteMapping("/deleteBookOffer")
     public ResponseEntity<String> addBookOffer(@RequestBody DeleteBookForm deleteBookForm) {
          try {
 
-            service.deleteBookOffer(deleteBookForm.getUsername(), deleteBookForm.getBookId());
+            bookService.deleteBookOffer(deleteBookForm.getUsername(), deleteBookForm.getBookId());
             return ResponseEntity.ok("Removed");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -68,12 +101,23 @@ public class UserController {
 
     @GetMapping("/retrieveOffers")
     public List<Book> addBookOffer(@RequestParam String username) {
-        return service.retrieveBookOffers(username);
+        return bookService.retrieveBookOffers(username);
     }
+    
+    @GetMapping("/retrievebookrequesters")
+    public List<BookRequest> retrieveBookRequesters(@RequestParam int bookId) {
+        return requestService.getBookRequestsByBookId(bookId);
+    }
+
+    @GetMapping("/retrieveuserrequests")
+    public List<BookRequest> retrieveUserRequests(@RequestParam int userId) {
+        return requestService.getBookRequestsByUserId(userId);
+    }
+
 
     @GetMapping("/profile")
     public UserProfile retrieveUser(@RequestParam String username) {
-        return service.retrieveUserProfile(username);
+        return userService.retrieveUserProfile(username);
     }
 
     

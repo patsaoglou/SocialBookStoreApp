@@ -1,6 +1,5 @@
 package com.SE2024.SocialBookStore.model;
 
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
