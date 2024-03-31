@@ -136,4 +136,8 @@ public class UserProfile {
     public void addBookToBookOffersList(Book newBook){
         bookOffers.add(newBook);
     }
+
+    public Boolean deleteOfferFromUser(Book bookToDelete){
+        return bookOffers.remove(bookToDelete);
+    }
 }

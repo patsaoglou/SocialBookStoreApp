@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
 import com.SE2024.SocialBookStore.dao.BookAuthorDAO;
@@ -32,23 +33,43 @@ public class UserProfileServiceImpl implements UserProfileService{
     @Autowired
     BookDAO bookDAO;
 
+    
+    public void deleteBookOffer(String username, int bookId){
+        UserProfile user =  validateUsername(username);
+        Book bookToDelete = bookDAO.findById(bookId);
 
+        if (bookToDelete == null){
+            throw new IllegalArgumentException("Book to delete doesn't exist");
+        }else{
+            if (user.deleteOfferFromUser(bookToDelete) == true){
+                userProfileDAO.save(user);
+                bookDAO.delete(bookToDelete);
+            }else{
+                throw new IllegalArgumentException("Book does not belong to user");
+
+            }
+        }
+    }
+
+    public UserProfile retrieveUserProfile(String username){
+        UserProfile user = validateUsername(username);
+
+        return user;        
+    }
 
     public List<Book> retrieveBookOffers(String username){
-        validateAddBookOfferUsername(username);
-
-        UserProfile user = userProfileDAO.findByUsername(username);
+        UserProfile user = validateUsername(username);
 
         return user.getBookOffers();
     }
 
-    private void validateAddBookOfferUsername(String username){
+    private UserProfile validateUsername(String username){
         validateIfUsernameNull(username);
-        validateUsernameNonExistance(username);
+        return validateUsernameNonExistance(username);
     }
 
     public Book addBookOffer(Book bookData, String username){
-        validateAddBookOfferUsername(username);
+        validateUsername(username);
         validateBookObject(bookData);
 
         bookData.setAuthors(addAuthors(bookData.getAuthors()));
@@ -134,7 +155,6 @@ public class UserProfileServiceImpl implements UserProfileService{
         }
     }
 
-
     private void validateBookAuthorLastName(String lastName){
         if (lastName == null){
             throw new IllegalArgumentException("Author's last name is null");
@@ -155,8 +175,6 @@ public class UserProfileServiceImpl implements UserProfileService{
             throw new IllegalArgumentException("Book category name is null");
         }
     }
-
-   
 
     public UserProfile registerUserProfileData(UserProfile profileData){
         validateUserProfileObject(profileData);
@@ -180,10 +198,14 @@ public class UserProfileServiceImpl implements UserProfileService{
             throw new IllegalArgumentException("Username already exists");
         }
     }
-    private void validateUsernameNonExistance(String username){
-        if (userProfileDAO.findByUsername(username) == null){
+   
+    private UserProfile validateUsernameNonExistance(String username){
+        UserProfile user = userProfileDAO.findByUsername(username);
+        
+        if (user == null){
             throw new IllegalArgumentException("Username doesn't exists");
-        }
+        } 
+        return user;
     }
     
     private void validateIfUsernameNull(String username){
