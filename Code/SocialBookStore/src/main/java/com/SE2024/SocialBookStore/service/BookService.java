@@ -10,5 +10,7 @@ public interface BookService {
     Book addBookOffer(Book bookData, String username); // ok 
     void deleteBookOffer(String username, int bookId); //ok
 
+    // added
+    Book getBookById(int bookId);
     
 } 

@@ -65,7 +65,9 @@ public class BookSeviceImpl implements BookService{
                 bookAuthorDAO.save(author);
                 authorFromDAO = bookAuthorDAO.findByFirstNameAndLastName(author.getFirstName(), author.getLastName());
                 authorsFromDAO.add(authorFromDAO);
-            }     
+            }else{
+                authorsFromDAO.add(authorFromDAO);
+            }
         }
 
         return authorsFromDAO;
@@ -101,5 +103,9 @@ public class BookSeviceImpl implements BookService{
         UserProfile user = userValidator.validateUsername(username);
 
         return user.getBookOffers();
+    }
+
+    public Book getBookById(int bookId){
+        return bookDAO.findById(bookId);
     }
 }

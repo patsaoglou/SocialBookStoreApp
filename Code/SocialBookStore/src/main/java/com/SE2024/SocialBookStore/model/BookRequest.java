@@ -25,26 +25,33 @@ public class BookRequest {
     public BookRequest() {
         this.status = "PENDING";
     }
+    
     public BookRequest(UserProfile requester, Book requestedBook) {
         this.requester = requester;
         this.requestedBook = requestedBook;
         this.status = "PENDING";
     }
+
     public Book getRequestedBook() {
         return requestedBook;
     }
+
     public UserProfile getRequester() {
         return requester;
     }
+
     public String getStatus() {
         return status;
     }
+
     public void setRequestedBook(Book requestedBook) {
         this.requestedBook = requestedBook;
     }
+
     public void setRequester(UserProfile requester) {
         this.requester = requester;
     }
+
     public void setStatus(String status) {
         this.status = status;
     }    

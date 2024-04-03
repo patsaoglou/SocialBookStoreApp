@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet" />
+  <title>Offer Book</title>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="">
+ 
+  <nav class="navbar navbar-expand-lg bg-body-tertiary "data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" >SocialBookStore</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Search Book
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="test.html">By Book Title</a></li>
+              <li><a class="dropdown-item" href="test.html">By Book Author</a></li>
+              <li><a class="dropdown-item" href="test.html">By Book ID</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="offerBook.html">Offer book</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              My Profile
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="profileDetails.html">Profile Details</a></li>
+              <li><a class="dropdown-item" href="myBookOffers.html">My Book Offers</a></li>
+              <li><a class="dropdown-item" href="requests.html">My Book Requests</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="#" onclick="return confirm('Are you sure you want to logout?')">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div class="container">
+  <div class="py-5 text-center">
+    <h2>Post a book offer</h2>  
+    <p class="lead">Fill the form below with all the necessary book details and press submit to post a book offer.</p>
+  </div>
+</div>
+
+<div class="container justify-content-center" style="width: 40%;">
+  <form>
+    <div class="mb-3">
+      <label for="bookTitle" class="form-label">Book Title</label>
+      <input type="text" class="form-control" id="bookTitle" aria-describedby="bookTitleHelp" required>
+    </div>
+    <div class="mb-3">
+      <label for="bookSummary" class="form-label">Book Summary</label>
+      <textarea class="form-control" id="bookSummary" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="bookCategory" class="form-label">Book Category</label>
+      <input type="text" class="form-control" id="bookCategory" aria-describedby="bookCategoryHelp" required>
+    </div>
+    <div class="mb-3">
+      <label id="authors" class="form-label">Authors</label>
+      <div id="authorInputs">
+        <div class="input-group mb-2">
+          <input type="text" class="form-control" id="authorFirstName" placeholder="First Name" required>
+          <input type="text" class="form-control" id="authorLastName" placeholder="Last Name" required>
+          <button class="btn btn-outline-secondary" type="button" onclick="removeAuthorField(this)">Remove</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-sm btn-secondary" onclick="addAuthorField()">Add Author</button>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="addBook()">Submit</button>
+  </form>
+</div>
+
+<script>
+  let authorCount = 1;
+
+  function addAuthorField() {
+    authorCount++;
+    const newInputGroup = document.createElement('div');
+    newInputGroup.className = 'input-group mb-2';
+    newInputGroup.innerHTML = `
+      <input type="text" class="form-control" id="authorFirstName" placeholder="First Name" required>
+      <input type="text" class="form-control" id="authorLastName" placeholder="Last Name" required>
+      <button class="btn btn-outline-secondary" type="button" onclick="removeAuthorField(this)">Remove</button>
+    `;
+    document.getElementById('authorInputs').appendChild(newInputGroup);
+  }
+
+  function removeAuthorField(button) {
+    if (authorCount > 1) {
+      const inputGroup = button.parentElement;
+      inputGroup.parentElement.removeChild(inputGroup);
+      authorCount--;
+    } else {
+      alert("At least one author is required.");
+    }
+  }
+
+  function addBook() {
+    const authors = [];
+    const authorInputs = document.querySelectorAll('#authorInputs .input-group');
+    authorInputs.forEach(inputGroup => {
+      const firstName = inputGroup.querySelector('#authorFirstName').value;
+      const lastName = inputGroup.querySelector('#authorLastName').value;
+      authors.push({ firstName, lastName });
+    });
+
+    const bookData = {
+      bookTitle: document.getElementById("bookTitle").value,
+      bookSummary: document.getElementById("bookSummary").value,
+      authors: authors,
+      bookCategory: {
+        categoryName: document.getElementById("bookCategory").value
+      }
+    };
+
+    fetch('http://localhost:8080/user/addbook', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookData),
+    })
+    .then(response => {
+      if (response.ok) {
+        alert("Book added successfully!");
+        window.location.href = "/../index.html"; 
+      } else {
+        throw new Error('Failed to add book');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("Error adding book. Please try again.");
+    });
+  }
+</script>
+</body>
+</html>
+
+
+

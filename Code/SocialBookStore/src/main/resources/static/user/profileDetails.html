@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet" />
+  <title>Profile Details</title>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .custom-btn {
+        background-color: #5295b4fa;
+        border-color: #5295b4fa;
+        margin-top: 5px;
+    }
+    .custom-btn:hover {
+        background-color: #5295b4fa;
+        border-color: #5295b4fa;
+    }
+</style>
+</head>
+  <body class="">    
+    <nav class="navbar navbar-expand-lg bg-body-tertiary "data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" >SocialBookStore</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Search Book
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="test.html">By Book Title</a></li>
+                <li><a class="dropdown-item" href="test.html">By Book Author</a></li>
+                <li><a class="dropdown-item" href="test.html">By Book ID</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="offerBook.html">Offer book</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                My Profile
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="profileDetails.html">Profile Details</a></li>
+                <li><a class="dropdown-item" href="myBookOffers.html">My Book Offers</a></li>
+                <li><a class="dropdown-item" href="requests.html">My Book Requests</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="#" onclick="return confirm('Are you sure you want to logout?')">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+    <div class="container">
+      <div id="userDetails">
+
+      </div>
+        <a href="costumize.html" class="btn custom-btn btn-sm" role="button">Costumize Profile Details</a>
+        
+    </div>
+<script>
+    
+    fetch('http://localhost:8080/user/get-profile')
+      .then(response => response.json())
+      .then(user => {
+        const userDetails = document.getElementById('userDetails');
+        userDetails.innerHTML = `
+          <h2>User Details</h2>
+          <p>UserID: ${user.id}</p>
+          <p>Username: ${user.username}</p>
+          <p>Name: ${user.firstName} ${user.lastName}</p>
+          <p>Address: ${user.address}</p>
+          <p>Age: ${user.age}</p>
+          <p>Telephone: ${user.telephone}</p>
+        `;
+      })
+      .catch(error => console.error('Error fetching user data:', error));
+  </script>
+</body>
+</html>

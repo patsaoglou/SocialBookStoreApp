@@ -4,10 +4,8 @@ import org.springframework.stereotype.Repository;
 
 import com.SE2024.SocialBookStore.model.UserProfile;
 
-
 @Repository
 public interface UserProfileDAO extends JpaRepository<UserProfile, Integer>{
     public UserProfile findById(int id);
     public UserProfile findByUsername(String username);
-
 }
