@@ -17,42 +17,42 @@
           </div>
         <div class="container justify-content-center" style="width: 20%;">
             
-            <form>
+            <form th:action="@{/register_user_submit}" method="post">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Username</label>
-                    <input type="email" class="form-control" id="" aria-describedby="emailHelp" placeholder="Enter Username">
+                    <input type="text" class="form-control" id="" aria-describedby="emailHelp" placeholder="Enter Username" th:field="${user.username}">
                     <small id="emailHelp" class="form-text text-muted">We'll never share your credentials with anyone else.</small>
                 </div>
                 <div class="form-group py-1">
                     <label for="exampleInputFirstName">First Name</label>
-                    <input type="text" class="form-control" id="" placeholder="John">
+                    <input type="text" class="form-control" id="" placeholder="John" th:field="${userProfile.firstName}">
                 </div>
                 <div class="form-group py-1">
                     <label for="exampleInputLastName">Last Name</label>
-                    <input type="text" class="form-control" id="" placeholder="Smith">
+                    <input type="text" class="form-control" id="" placeholder="Smith" th:field="${userProfile.lastName}">
                 </div>
                 <div class="form-group py-1">
                     <label for="exampleInputTelephone">Telephone</label>
-                    <input type="text" class="form-control" id="" placeholder="Telephone">
+                    <input type="text" class="form-control" id="" placeholder="Telephone" th:field="${userProfile.telephone}">
                 </div>
                 <div class="form-group py-1">
                     <label for="exampleInputAddress">Address</label>
-                    <input type="text" class="form-control" id="" placeholder="Address">
+                    <input type="text" class="form-control" id="" placeholder="Address" th:field="${userProfile.address}">
                 </div>
                 <div class="form-group py-1">
                     <label for="exampleInputPassword1">Age</label>
-                    <input type="number" class="form-control" id="" placeholder="Age">
+                    <input type="number" class="form-control" id="" placeholder="Age" th:field="${userProfile.age}">
                 </div>
                 <div class="form-group py-1">
                     <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="" placeholder="Password">
+                    <input type="password" class="form-control" id="" placeholder="Password" th:field="${user.password}">
                 </div>
                 <div class="form-group py-1">
                     <label for="exampleInputPassword1">Repeat Password</label>
                     <input type="password" class="form-control" id="" placeholder="Repeat Password">
                 </div>
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button" style="margin-top: 1rem;">Register</button>
+                    <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">Register</button>
                   </div>
             </form>
         </div>
