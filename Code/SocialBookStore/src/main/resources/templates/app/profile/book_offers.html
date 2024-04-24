@@ -96,49 +96,73 @@
               </tr>
           </thead>
           <tbody>
+            <tr th:each="book : ${userBookOffers}">
+			
+              <td th:text="${book.id}">	
+              <td th:text="${book.bookTitle}" >	
+                            
+              <td>
+                
+                <form th:action="@{/app/profile/delete_book_offer}" method="post">
+                  
+                  <input type="hidden" name="bookId" th:value="${book.id}">
+                  
+                  <a th:href="@{/app/profile/get_book_details(bookId=${book.id})}" class="btn btn-info btn-sm">
+                      Book Details
+                  </a>
+                  
+                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this book offer?')">
+                      Delete
+                  </button>
+                </form>
+                               
+              </td>
+              
+              
+            </tr>
           </tbody>
       </table>
   </div>
     <script>
 
-      fetch('http://localhost:8080/user/retrieveOffers')
-        .then(response => response.json())
-        .then(bookOffers => {
-          const userBookOffersTable = document.querySelector('#userBookOffers tbody');
+      // fetch('http://localhost:8080/user/retrieveOffers')
+      //   .then(response => response.json())
+      //   .then(bookOffers => {
+      //     const userBookOffersTable = document.querySelector('#userBookOffers tbody');
           
-          bookOffers.forEach(bookOffer => {
-            const row = document.createElement('tr');
+      //     bookOffers.forEach(bookOffer => {
+      //       const row = document.createElement('tr');
 
-            row.innerHTML = `
-            <td>${bookOffer.id}</td>  
-            <td>${bookOffer.bookTitle}</td>
-            <td><a href="../book_details?bookId=${bookOffer.id}" class="btn custom-btn btn-sm">Book Details</a>
-            <button type="button" class="btn btn-danger btn-sm" onclick="deleteBookOffer(${bookOffer.id})"">Delete</button>
-            </td>
-            `;
+      //       row.innerHTML = `
+      //       <td>${bookOffer.id}</td>  
+      //       <td>${bookOffer.bookTitle}</td>
+      //       <td><a href="../book_details?bookId=${bookOffer.id}" class="btn custom-btn btn-sm">Book Details</a>
+      //       <button type="button" class="btn btn-danger btn-sm" onclick="deleteBookOffer(${bookOffer.id})"">Delete</button>
+      //       </td>
+      //       `;
             
-            userBookOffersTable.appendChild(row);
-          });
-        })
-        .catch(error => console.error('Error fetching user data:', error));
+      //       userBookOffersTable.appendChild(row);
+      //     });
+      //   })
+      //   .catch(error => console.error('Error fetching user data:', error));
       
       
-        function deleteBookOffer(bookId){
-        const confirmation = confirm("Are you sure you want to delete the book")
-        if(confirmation){
+      //   function deleteBookOffer(bookId){
+      //   const confirmation = confirm("Are you sure you want to delete the book")
+      //   if(confirmation){
           
-          fetch(`http://localhost:8080/user/deleteBookOffer?username=${"doc"}&bookId=${bookId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-          })
-          .then(data => {
-            window.location.reload();
-          })
+      //     fetch(`http://localhost:8080/user/deleteBookOffer?username=${"doc"}&bookId=${bookId}`, {
+      //           method: 'DELETE',
+      //           headers: {
+      //               'Content-Type': 'application/json',
+      //           }
+      //     })
+      //     .then(data => {
+      //       window.location.reload();
+      //     })
 
-        }
-      }
+      //   }
+      // }
     </script>
   </body>
 </html>

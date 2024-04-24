@@ -116,24 +116,6 @@
       </table>
   </div>
     
-  <script>
-    
-    fetch('http://localhost:8080/user/get-profile')
-      .then(response => response.json())
-      .then(user => {
-        const userDetails = document.getElementById('userDetails');
-        userDetails.innerHTML = `
-          <h2>User Details</h2>
-          <p>UserID: ${user.id}</p>
-          <p>Username: ${user.username}</p>
-          <p>Name: ${user.firstName} ${user.lastName}</p>
-          <p>Address: ${user.address}</p>
-          <p>Age: ${user.age}</p>
-          <p>Telephone: ${user.telephone}</p>
-        `;
-      })
-      .catch(error => console.error('Error fetching user data:', error));
-  </script>
   
   </body>
 </html>

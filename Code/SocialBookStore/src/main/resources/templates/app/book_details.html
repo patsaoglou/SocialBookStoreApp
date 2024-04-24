@@ -57,9 +57,9 @@
               My Profile
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/profile/details">Profile Details</a></li>
-              <li><a class="dropdown-item" href="/profile/book_offers">My Book Offers</a></li>
-              <li><a class="dropdown-item" href="/profile/book_requests">My Book Requests</a></li>
+              <li><a class="dropdown-item" href="/app/profile/details">Profile Details</a></li>
+              <li><a class="dropdown-item" href="/app/profile/book_offers">My Book Offers</a></li>
+              <li><a class="dropdown-item" href="/app/profile/book_requests">My Book Requests</a></li>
               <li><hr class="dropdown-divider" /></li>
               <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
             </ul>
@@ -76,39 +76,18 @@
     <h2>Book Details</h2>  
     <p class="lead">In the form below you find details about your specified book.</p>
     <div id="bookDetails">
+          <h2>Title: <span th:text="${book.bookTitle}"></span></h2>
+          <p><b>Category:</b> <span th:text="${book.bookCategory.categoryName}"></span></p>
+          <p><b>Authors:</b> <span th:text="${bookAuthors}"></span></p>
+          
+          <p><b>Summary: </b><span th:text="${book.bookSummary}"></span></p>
+       
 
     </div>
   </div>
     
 </div>
 </div>
-
-<script>
-  
-  function getQueryParam(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-  }
-
-  const bookId = getQueryParam('bookId');
-  if (bookId) {
-    fetch(`http://localhost:8080/user/get-book-details?bookId=${bookId}`)
-      .then(response => response.json())
-      .then(book => {
-        const bookDetailsDiv = document.getElementById('bookDetails');
-        
-        const authorsHTML = book.authors.map(author => `${author.firstName} ${author.lastName}`).join(', ');
-        bookDetailsDiv.innerHTML = `
-          <h2>Title: ${book.bookTitle}</h2>
-          <p><b>Authors:</b> ${authorsHTML}</p>
-          <p><b>Category:</b> ${book.bookCategory.categoryName}</p>
-          <p><b>Summary: </b>${book.bookSummary}</p>
-          <!-- Add more book details as needed -->
-        `;
-      })
-      .catch(error => console.error('Error fetching book details:', error));
-  }
-</script>
 
 </body>
 </html>

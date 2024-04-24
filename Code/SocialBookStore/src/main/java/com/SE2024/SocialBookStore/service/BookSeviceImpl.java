@@ -1,6 +1,7 @@
 package com.SE2024.SocialBookStore.service;
 
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +33,19 @@ public class BookSeviceImpl implements BookService{
     @Autowired
     UserProfileDAO userProfileDAO;
 
-    public Book addBookOffer(Book bookData, String username){
+    public Book addBookOffer(Book bookData, String authors, String username){
+
+        List<String> authorList = Arrays.asList(authors.split(","));
+        Set<BookAuthor> bookAuthors = new HashSet();
+
+        for (String author : authorList) {
+            List<String> authorFirstAndLastName = Arrays.asList(author.split(" "));
+            BookAuthor bookAuthor = new BookAuthor(authorFirstAndLastName.get(0), authorFirstAndLastName.get(1));
+            bookAuthors.add(bookAuthor);
+        }
+
+        bookData.setAuthors(bookAuthors);
+
         UserProfileServiceValidator userValidator = new UserProfileServiceValidator(userProfileDAO);
         BookServiceValidator bookValidator = new BookServiceValidator(bookDAO);    
         userValidator.validateUsername(username);

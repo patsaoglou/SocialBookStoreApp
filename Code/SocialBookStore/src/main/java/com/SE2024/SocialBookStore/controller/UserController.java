@@ -36,12 +36,12 @@ public class UserController {
     @Autowired
     BookRequestService requestService;
 
-    @PostMapping("/addbook")
-	public String registerUser(@RequestBody Book book) {
-        Book registeredBook = bookService.addBookOffer(book, "doc");
+    // @PostMapping("/addbook")
+	// public String registerUser(@RequestBody Book book) {
+    //     Book registeredBook = bookService.addBookOffer(book, "doc");
         
-		return "ok";
-	}
+	// 	return "ok";
+	// }
 
 
 

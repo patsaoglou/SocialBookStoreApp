@@ -1,6 +1,6 @@
 package com.SE2024.SocialBookStore.viewsController;
 
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +13,12 @@ import com.SE2024.SocialBookStore.model.User;
 import com.SE2024.SocialBookStore.model.UserProfile;
 import com.SE2024.SocialBookStore.service.UserProfileService;
 import com.SE2024.SocialBookStore.service.UserService;
-
+import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 
 @Controller
 public class AuthViewsController {
-
-    private static final Logger logger = LoggerFactory.getLogger(AuthViewsController.class);
 
     @Autowired
     UserService userService;

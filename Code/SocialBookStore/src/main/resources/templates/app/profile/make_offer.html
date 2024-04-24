@@ -67,32 +67,26 @@
 </div>
 
 <div class="container justify-content-center" style="width: 40%;">
-  <form>
+  
+  <form th:action="@{/app/profile/make_offer_submit}" method="post">
     <div class="mb-3">
       <label for="bookTitle" class="form-label">Book Title</label>
-      <input type="text" class="form-control" id="bookTitle" aria-describedby="bookTitleHelp" required>
+      <input type="text" class="form-control" id="bookTitle" aria-describedby="bookTitleHelp" th:field="*{book.bookTitle}" required>
     </div>
     <div class="mb-3">
       <label for="bookSummary" class="form-label">Book Summary</label>
-      <textarea class="form-control" id="bookSummary" rows="3"></textarea>
+      <textarea class="form-control" id="bookSummary" rows="3" th:field="*{book.bookSummary}"></textarea>
     </div>
     <div class="mb-3">
       <label for="bookCategory" class="form-label">Book Category</label>
-      <input type="text" class="form-control" id="bookCategory" aria-describedby="bookCategoryHelp" required>
+      <input type="text" class="form-control" id="bookCategory" aria-describedby="bookCategoryHelp" th:field="*{book.bookCategory.categoryName}"required>
     </div>
     <div class="mb-3">
-      <label id="authors" class="form-label">Authors</label>
-      <div id="authorInputs">
-        <div class="input-group mb-2">
-          <input type="text" class="form-control" id="authorFirstName" placeholder="First Name" required>
-          <input type="text" class="form-control" id="authorLastName" placeholder="Last Name" required>
-          <button class="btn btn-outline-secondary" type="button" onclick="removeAuthorField(this)">Remove</button>
-        </div>
-      </div>
-      <button type="button" class="btn btn-sm btn-secondary" onclick="addAuthorField()">Add Author</button>
+      <label for="bookCategory" class="form-label">Book Authors (Separate with Commas)</label>
+      <input type="text" class="form-control" id="bookCategory" aria-describedby="bookCategoryHelp" placeholder="First Name Last Name" name="bookAuthors" required>
     </div>
 
-    <button type="button" class="btn btn-primary" onclick="addBook()">Submit</button>
+    <button type="submit" class="btn btn-primary" >Submit</button>
   </form>
 </div>
 
@@ -104,8 +98,8 @@
     const newInputGroup = document.createElement('div');
     newInputGroup.className = 'input-group mb-2';
     newInputGroup.innerHTML = `
-      <input type="text" class="form-control" id="authorFirstName" placeholder="First Name" required>
-      <input type="text" class="form-control" id="authorLastName" placeholder="Last Name" required>
+      <input type="text"name="authors[__${index.index}__].firstName"  th:value="*{author.firstName}" class="form-control" id="authorFirstName" placeholder="First Name" required>
+      <input type="text"name="authors[__${index.index}__].lastName"  th:value="*{author.lastName}" class="form-control" id="authorLastName" placeholder="Last Name" required>
       <button class="btn btn-outline-secondary" type="button" onclick="removeAuthorField(this)">Remove</button>
     `;
     document.getElementById('authorInputs').appendChild(newInputGroup);
@@ -119,45 +113,6 @@
     } else {
       alert("At least one author is required.");
     }
-  }
-
-  function addBook() {
-    const authors = [];
-    const authorInputs = document.querySelectorAll('#authorInputs .input-group');
-    authorInputs.forEach(inputGroup => {
-      const firstName = inputGroup.querySelector('#authorFirstName').value;
-      const lastName = inputGroup.querySelector('#authorLastName').value;
-      authors.push({ firstName, lastName });
-    });
-
-    const bookData = {
-      bookTitle: document.getElementById("bookTitle").value,
-      bookSummary: document.getElementById("bookSummary").value,
-      authors: authors,
-      bookCategory: {
-        categoryName: document.getElementById("bookCategory").value
-      }
-    };
-
-    fetch('http://localhost:8080/user/addbook', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(bookData),
-    })
-    .then(response => {
-      if (response.ok) {
-        alert("Book added successfully!");
-        window.location.href = "../home"; 
-      } else {
-        throw new Error('Failed to add book');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert("Error adding book. Please try again.");
-    });
   }
 </script>
 </body>
