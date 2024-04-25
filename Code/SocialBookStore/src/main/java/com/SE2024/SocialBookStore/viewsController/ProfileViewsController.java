@@ -69,7 +69,7 @@ public class ProfileViewsController {
         return "redirect:/app/profile/book_offers";
     }
 
-    @GetMapping("/book_offers")
+    @GetMapping("/my_book_offers")
     public String getBookOffers(Model model) {
 
         model.addAttribute("userBookOffers", bookService.retrieveBookOffers(getAuthenticatedUsername()));
@@ -77,21 +77,6 @@ public class ProfileViewsController {
         return "app/profile/book_offers";
     }
 
-
-    @GetMapping("/get_book_details")
-    public String getBookDetails(@RequestParam("bookId") int bookId, Model model) {
-        Book book = bookService.getBookById(bookId);
-
-        String authorsString = "";
-
-        Set<BookAuthor> bookAuthors = book.getAuthors();
-        for (BookAuthor author: bookAuthors){
-            authorsString += author.getFirstName()+" "+ author.getLastName()+ ", ";
-        }
-        model.addAttribute("bookAuthors", authorsString);
-        model.addAttribute("book", bookService.getBookById(bookId));
-        return "app/book_details";
-    }
 
     @PostMapping("/delete_book_offer")
     public String deleteBookOffer(@RequestParam("bookId") int bookId, Model model) {

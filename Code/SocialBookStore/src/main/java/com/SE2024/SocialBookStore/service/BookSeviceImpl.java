@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,9 @@ import com.SE2024.SocialBookStore.model.UserProfile;
 
 @Service
 public class BookSeviceImpl implements BookService{
+
+
+    private static final Logger logger = LoggerFactory.getLogger(BookSeviceImpl.class);
 
     @Autowired
     BookDAO bookDAO;
@@ -120,5 +125,22 @@ public class BookSeviceImpl implements BookService{
 
     public Book getBookById(int bookId){
         return bookDAO.findById(bookId);
+    }
+
+    public List<Book> findBooksNotOfferedByUser(String username) {
+        UserProfile user = userProfileDAO.findByUsername(username);
+        List<Book> userBooks = user.getBookOffers();
+
+        List<Book> books = bookDAO.findAll();
+
+        for (Book book: books){
+            logger.info("out of if : "+book.getId());
+           if (userBooks.contains(book)){
+                logger.info("contains: "+book.getId());
+                books.remove(book);
+           }
+        }
+
+        return books;
     }
 }

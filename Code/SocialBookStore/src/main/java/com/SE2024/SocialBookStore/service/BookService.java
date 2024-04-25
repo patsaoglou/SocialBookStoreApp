@@ -12,5 +12,6 @@ public interface BookService {
 
     // added
     Book getBookById(int bookId);
+    List<Book> findBooksNotOfferedByUser(String username);
     
 } 

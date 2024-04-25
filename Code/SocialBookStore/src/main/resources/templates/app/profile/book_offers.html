@@ -68,8 +68,8 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="details">Profile Details</a></li>
-                <li><a class="dropdown-item" href="book_offers">My Book Offers</a></li>
-                <li><a class="dropdown-item" href="book_requests">My Book Requests</a></li>
+                <li><a class="dropdown-item" href="my_book_offers">My Book Offers</a></li>
+                <li><a class="dropdown-item" href="my_book_requests">My Book Requests</a></li>
                 <li><hr class="dropdown-divider" /></li>
                 <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
               </ul>
@@ -107,8 +107,12 @@
                   
                   <input type="hidden" name="bookId" th:value="${book.id}">
                   
-                  <a th:href="@{/app/profile/get_book_details(bookId=${book.id})}" class="btn btn-info btn-sm">
+                  <a th:href="@{/app/get_book_details(bookId=${book.id})}" class="btn btn-info btn-sm">
                       Book Details
+                  </a>
+
+                  <a th:href="@{/app/profile/get_book_requesters(bookId=${book.id})}" class="btn btn-success btn-sm">
+                    Book Requesters
                   </a>
                   
                   <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this book offer?')">
@@ -123,46 +127,6 @@
           </tbody>
       </table>
   </div>
-    <script>
-
-      // fetch('http://localhost:8080/user/retrieveOffers')
-      //   .then(response => response.json())
-      //   .then(bookOffers => {
-      //     const userBookOffersTable = document.querySelector('#userBookOffers tbody');
-          
-      //     bookOffers.forEach(bookOffer => {
-      //       const row = document.createElement('tr');
-
-      //       row.innerHTML = `
-      //       <td>${bookOffer.id}</td>  
-      //       <td>${bookOffer.bookTitle}</td>
-      //       <td><a href="../book_details?bookId=${bookOffer.id}" class="btn custom-btn btn-sm">Book Details</a>
-      //       <button type="button" class="btn btn-danger btn-sm" onclick="deleteBookOffer(${bookOffer.id})"">Delete</button>
-      //       </td>
-      //       `;
-            
-      //       userBookOffersTable.appendChild(row);
-      //     });
-      //   })
-      //   .catch(error => console.error('Error fetching user data:', error));
-      
-      
-      //   function deleteBookOffer(bookId){
-      //   const confirmation = confirm("Are you sure you want to delete the book")
-      //   if(confirmation){
-          
-      //     fetch(`http://localhost:8080/user/deleteBookOffer?username=${"doc"}&bookId=${bookId}`, {
-      //           method: 'DELETE',
-      //           headers: {
-      //               'Content-Type': 'application/json',
-      //           }
-      //     })
-      //     .then(data => {
-      //       window.location.reload();
-      //     })
-
-      //   }
-      // }
-    </script>
+  
   </body>
 </html>

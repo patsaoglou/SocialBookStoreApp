@@ -69,8 +69,8 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="profile/details">Profile Details</a></li>
-                <li><a class="dropdown-item" href="profile/book_offers">My Book Offers</a></li>
-                <li><a class="dropdown-item" href="profile/book_requests">My Book Requests</a></li>
+                <li><a class="dropdown-item" href="profile/my_book_offers">My Book Offers</a></li>
+                <li><a class="dropdown-item" href="profile/my_book_requests">My Book Requests</a></li>
                 <li><hr class="dropdown-divider" /></li>
                 <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
               </ul>
@@ -81,37 +81,46 @@
     </nav>
     <div class="container">
         
-      <div class="clearfix"></div> <!-- Clear floats -->
+      <div class="clearfix"></div>
 
       <hr>
-
       <div class="py-5 text-center">
-        <h2>Books </h2>  
+        <h2>My Book Offers</h2>  
     </div>
-
-      <!-- Table for displaying books -->
-      <table class="table table-bordered table-striped">
+      <table id="userBookOffers" class="table table-bordered table-striped">
           <thead class="thead-dark">
               <tr>
                   <th>Book ID</th>
                   <th>Title</th>
-                  <th>Author(s)</th>
                   <th>Action</th>
                   
               </tr>
           </thead>
           <tbody>
-              <tr>
-                  <!-- Sample data, replace with dynamic data -->
-                  <td>1</td>
-                  <td>Sample Title</td>
-                  <td>Sample Author</td>
-                  <td>
-                      <!-- Update button -->                      
-                      <!-- Request button with confirmation -->
-                      <a href="#" class="btn custom-btn btn-sm" onclick="return confirm('Are you sure you want to make a request for this book?')">Request</a>
-                  </td>
-              </tr>
+            <tr th:each="book : ${userBookOffers}">
+			
+              <td th:text="${book.id}">	
+              <td th:text="${book.bookTitle}" >	
+                            
+              <td>
+                
+                <form th:action="@{/app/profile/delete_book_offer}" method="post">
+                  
+                  <input type="hidden" name="bookId" th:value="${book.id}">
+                  
+                  <a th:href="@{/app/get_book_details(bookId=${book.id})}" class="btn btn-info btn-sm">
+                      Book Details
+                  </a>
+                  
+                  <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to delete this book offer?')">
+                      Request Book
+                  </button>
+                </form>
+                               
+              </td>
+              
+              
+            </tr>
           </tbody>
       </table>
   </div>
