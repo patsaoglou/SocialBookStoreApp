@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.SE2024.SocialBookStore.model.BookAuthor;
+import com.SE2024.SocialBookStore.model.BookRequest;
 import com.SE2024.SocialBookStore.model.Book;
 import com.SE2024.SocialBookStore.model.UserProfile;
+import com.SE2024.SocialBookStore.service.BookRequestService;
 import com.SE2024.SocialBookStore.service.BookService;
 import com.SE2024.SocialBookStore.service.UserProfileService;
 
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -33,6 +36,9 @@ public class ProfileViewsController {
     
     @Autowired
     BookService bookService;
+
+    @Autowired
+    BookRequestService bookRequestService;
     
     private static final Logger logger = LoggerFactory.getLogger(ProfileViewsController.class);
 
@@ -45,9 +51,8 @@ public class ProfileViewsController {
 
     @GetMapping("/details")
     public String getProfileDetailsPage(Model model){
-        UserProfile usernameDetails = userService.retrieveUserProfile(getAuthenticatedUsername());
 
-        model.addAttribute("user", usernameDetails);
+        model.addAttribute("user", userService.retrieveUserProfile(getAuthenticatedUsername()));
         return "app/profile/details";
     }
 
@@ -66,7 +71,7 @@ public class ProfileViewsController {
 
         bookService.addBookOffer(newBook, authors, getAuthenticatedUsername());        
 
-        return "redirect:/app/profile/book_offers";
+        return "redirect:/app/profile/my_book_offers";
     }
 
     @GetMapping("/my_book_offers")
@@ -83,12 +88,57 @@ public class ProfileViewsController {
 
         bookService.deleteBookOffer(getAuthenticatedUsername(), bookId);
         
-        return "redirect:/app/profile/book_offers";
+        return "redirect:/app/profile/my_book_offers";
     }
     
-    @GetMapping("/book_requests")
-    public String getBookRequests() {
-        return "app/profile/book_requests";
+    @GetMapping("/book_offer_details")
+    public String getBookOfferDetails(@RequestParam("bookId") int bookId, Model model) {
+
+        model.addAttribute("book",  bookService.getBookById(bookId));
+        model.addAttribute("bookRequesters", bookRequestService.retrieveRequestingUsers(bookId));
+        
+
+        return "app/profile/book_offer_details";
     }
 
+
+    @GetMapping("/my_book_requests")
+    public String getMyBookRequests(Model model) {
+
+        model.addAttribute("myBookRequests", bookRequestService.retrieveBookRequests(getAuthenticatedUsername()));
+
+        return "app/profile/my_book_requests";
+    }    
+
+    @PostMapping("/cancel_my_request")
+    public String cancelMyBookRequests(@RequestParam("bookId") int bookId, Model model) {
+        
+        bookRequestService.deleteBookRequest(bookId, getAuthenticatedUsername());
+
+        return "redirect:/app/profile/my_book_requests";
+    }
+
+    @PostMapping("/select_requester")
+    public String selectRequester(@RequestParam("requestId") int requestId,  Model model) {
+        
+        bookRequestService.selectRequester(requestId);
+
+        return "redirect:/app/profile/my_book_offers";
+    }
+
+    @PostMapping("/add_favourite_author")
+    public String add_favourite_author(@RequestParam("authorName") String authorName,  Model model) {
+        
+        userService.addFavouriteAuthor(authorName, getAuthenticatedUsername());
+        return "redirect:/app/profile/details";
+    }
+
+    @PostMapping("/add_favourite_category")
+    public String add_favourite_category(@RequestParam("categoryName") String categoryName,  Model model) {
+        
+        userService.addFavouriteCategory(categoryName, getAuthenticatedUsername());
+        return "redirect:/app/profile/details";
+    }
+    
 }
+

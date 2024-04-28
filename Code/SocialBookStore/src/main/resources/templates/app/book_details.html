@@ -78,7 +78,7 @@
     <div id="bookDetails">
           <h2>Title: <span th:text="${book.bookTitle}"></span></h2>
           <p><b>Category:</b> <span th:text="${book.bookCategory.categoryName}"></span></p>
-          <p><b>Authors:</b> <span th:text="${bookAuthors}"></span></p>
+          <p><b>Authors:</b> <span th:text="${book.toStringAuthors()}"></span></p>
           
           <p><b>Summary: </b><span th:text="${book.bookSummary}"></span></p>
        

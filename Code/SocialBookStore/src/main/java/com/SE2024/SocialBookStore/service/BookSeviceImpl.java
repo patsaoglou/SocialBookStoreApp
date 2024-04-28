@@ -3,17 +3,21 @@ package com.SE2024.SocialBookStore.service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.SE2024.SocialBookStore.dao.BookAuthorDAO;
 import com.SE2024.SocialBookStore.dao.BookCategoryDAO;
 import com.SE2024.SocialBookStore.dao.BookDAO;
+import com.SE2024.SocialBookStore.dao.BookRequestDAO;
 import com.SE2024.SocialBookStore.dao.UserProfileDAO;
 import com.SE2024.SocialBookStore.model.Book;
 import com.SE2024.SocialBookStore.model.BookAuthor;
@@ -37,6 +41,9 @@ public class BookSeviceImpl implements BookService{
 
     @Autowired
     UserProfileDAO userProfileDAO;
+    
+    @Autowired
+    BookRequestDAO bookRequestDAO;
 
     public Book addBookOffer(Book bookData, String authors, String username){
 
@@ -98,6 +105,7 @@ public class BookSeviceImpl implements BookService{
         userProfileDAO.save(user);
     }
       
+    @Transactional
     public void deleteBookOffer(String username, int bookId){
         UserProfileServiceValidator userValidator = new UserProfileServiceValidator(userProfileDAO);
         UserProfile user =  userValidator.validateUsername(username);
@@ -108,6 +116,7 @@ public class BookSeviceImpl implements BookService{
         }else{
             if (user.deleteOfferFromUser(bookToDelete) == true){
                 userProfileDAO.save(user);
+                bookRequestDAO.deleteByRequestedBook(bookToDelete);
                 bookDAO.delete(bookToDelete);
             }else{
                 throw new IllegalArgumentException("Book does not belong to user");
@@ -133,14 +142,15 @@ public class BookSeviceImpl implements BookService{
 
         List<Book> books = bookDAO.findAll();
 
-        for (Book book: books){
-            logger.info("out of if : "+book.getId());
-           if (userBooks.contains(book)){
-                logger.info("contains: "+book.getId());
-                books.remove(book);
-           }
+        Iterator<Book> iterator = books.iterator();
+        while (iterator.hasNext()) {
+            Book book = iterator.next();
+            if (userBooks.contains(book)) {
+                iterator.remove();
+            }
         }
 
         return books;
     }
+
 }

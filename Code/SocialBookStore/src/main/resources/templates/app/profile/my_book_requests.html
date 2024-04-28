@@ -84,35 +84,37 @@
 
       <hr>
       <div class="py-5 text-center">
-        <h2>My Book Offers</h2>  
+        <h2>My book requests</h2>  
     </div>
       <table id="userBookOffers" class="table table-bordered table-striped">
           <thead class="thead-dark">
               <tr>
-                  <th>Book ID</th>
+                  <th>Request ID</th>
                   <th>Title</th>
+                  <th>Status</th>
                   <th>Action</th>
                   
               </tr>
           </thead>
           <tbody>
-            <tr th:each="book : ${userBookOffers}">
+            <tr th:each="bookRequest : ${myBookRequests}">
 			
-              <td th:text="${book.id}">	
-              <td th:text="${book.bookTitle}" >	
+              <td th:text="${bookRequest.requestId}">	
+              <td th:text="${bookRequest.requestedBook.bookTitle}" >	
+              <td th:text="${bookRequest.status}" >	
                             
               <td>
                 
-                <form th:action="@{/app/profile/delete_book_offer}" method="post">
+                <form th:action="@{/app/profile/cancel_my_request}" method="post">
                   
-                  <input type="hidden" name="bookId" th:value="${book.id}">
+                  <input type="hidden" name="bookId" th:value="${bookRequest.requestedBook.id}">
                   
-                  <a th:href="@{/app/profile/book_offer_details(bookId=${book.id})}" class="btn btn-info btn-sm">
+                  <a th:href="@{/app/get_book_details(bookId=${bookRequest.requestedBook.id})}" class="btn btn-info btn-sm">
                       Book Details
                   </a>
                                     
-                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this book offer?')">
-                      Delete
+                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want cancel your request for this book offer?')">
+                      Cancel Request
                   </button>
                 </form>
                                

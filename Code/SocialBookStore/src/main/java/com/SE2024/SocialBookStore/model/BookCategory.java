@@ -13,8 +13,12 @@ public class BookCategory {
 
     @Column(name="categoryName")
 	private String categoryName;
-    
+
     public BookCategory() {
+    }
+
+    public BookCategory(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public int getId() {

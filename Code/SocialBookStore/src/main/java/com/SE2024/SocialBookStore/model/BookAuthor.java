@@ -49,4 +49,8 @@ public class BookAuthor {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }    
+    
+    public String toStringAuthorName(){
+        return getFirstName()+" "+getLastName();
+    }
 }

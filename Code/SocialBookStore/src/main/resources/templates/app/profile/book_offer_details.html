@@ -81,39 +81,48 @@
     </nav>
     <div class="py-5 text-center">
       <div class="container">
-          
+        <div class="container">
+          <div class="py-5 text-center">
+            <h2>Book Details</h2>  
+            <p class="lead">In the form below you find details about your specified book.</p>
+            <div id="bookDetails">
+                  <h2>Title: <span th:text="${book.bookTitle}"></span></h2>
+                  <p><b>Category:</b> <span th:text="${book.bookCategory.categoryName}"></span></p>
+                  <p><b>Authors:</b> <span th:text="${book.toStringAuthors()}"></span></p>
+                  
+                  <p><b>Summary: </b><span th:text="${book.bookSummary}"></span></p>
+               
         
-        <h2>Book Offer Requesters</h2>  
-        <p class="lead">In the table below you find all user that request your specified book.</p>
-        <div id="bookDetails">
-          <h2>Title: <span th:text="${book.bookTitle}"></span></h2>
+            </div>
+          </div>
+            
         </div>
-      
-
-        <!-- Table for displaying books -->
+        <h2>Book Offer Requesters</h2>  
+        <p class="lead">In the table below you find all users that request your specified book.</p>
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <tr>
                     <th>Request ID</th>
                     <th>Username</th>
+                    <th>Status</th>
+
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-              <tr th:each="bookRequest : ${bookRequests}">
-        
-                <td th:text="${bookRequest.id}">	
-                <td th:text="${bookRequest.username}" >	
+              <tr th:each="bookRequester : ${bookRequesters}">
+                <td th:text="${bookRequester.requestId}" >	
+                <td th:text="${bookRequester.requester.username}">	
+                <td th:text="${bookRequester.status}">	
                               
                 <td>
                   
-                  <form th:action="@{/app/profile/select_requester}" method="post">
-                    
-                    <input type="hidden" name="bookId" th:value="${book.id}">
-                    
-                    <a th:href="@{/app/profile/get_requester_details(username=${bookRequest.username})}" class="btn btn-info btn-sm">
+                  <form th:action="@{/app/profile/select_requester}" method="post">                    
+                    <a th:href="@{/app/user_details(username=${bookRequester.requester.username})}" class="btn btn-info btn-sm">
                         Requester Details
                     </a>
+                    
+                    <input type="hidden" name="requestId" th:value="${bookRequester.requestId}">
 
                     <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to select this user for this book offer?')">
                         Select
@@ -129,7 +138,5 @@
     </div>
     
     </div>
-      
-    <!-- End Example Code -->
   </body>
 </html>

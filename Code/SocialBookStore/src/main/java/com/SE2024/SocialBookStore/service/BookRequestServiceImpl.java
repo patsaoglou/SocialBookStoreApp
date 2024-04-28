@@ -71,4 +71,19 @@ public class BookRequestServiceImpl implements BookRequestService{
         return bookRequestDAO.findByRequestedBook(requestedBook);
     }
 
+    public void selectRequester(int requestId){
+        BookRequest accepted = bookRequestDAO.findByRequestId(requestId);
+
+        List<BookRequest> allRequests = bookRequestDAO.findByRequestedBook(accepted.getRequestedBook());
+
+        for (BookRequest request: allRequests){
+            if (request.getRequestId() != accepted.getRequestId()){
+                request.setStatus("DECLINED"); 
+            }else{
+                request.setStatus("ACCEPTED"); 
+            }
+        }
+        bookRequestDAO.saveAll(allRequests);
+    }
+
 }

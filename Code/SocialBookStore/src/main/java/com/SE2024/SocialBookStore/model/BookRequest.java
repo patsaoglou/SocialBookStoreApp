@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class BookRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer requestId;
+    private int requestId;
 
     @ManyToOne
     @JoinColumn(name = "bookId", referencedColumnName = "bookId")
@@ -32,6 +32,9 @@ public class BookRequest {
         this.status = "PENDING";
     }
 
+    public int getRequestId() {
+        return requestId;
+    }
     public Book getRequestedBook() {
         return requestedBook;
     }

@@ -37,10 +37,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="../home">Home</a>
+              <a class="nav-link active" aria-current="page" href="home">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="../search">Search book</a>
+              <a class="nav-link active" aria-current="page" href="search">Search book</a>
             </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="make_offer">Offer book</a>
@@ -56,9 +56,9 @@
                 My Profile
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="details">Profile Details</a></li>
-                <li><a class="dropdown-item" href="my_book_offers">My Book Offers</a></li>
-                <li><a class="dropdown-item" href="my_book_requests">My Book Requests</a></li>
+                <li><a class="dropdown-item" href="profile/details">Profile Details</a></li>
+                <li><a class="dropdown-item" href="profile/my_book_offers">My Book Offers</a></li>
+                <li><a class="dropdown-item" href="profile/my_book_requests">My Book Requests</a></li>
                 <li><hr class="dropdown-divider" /></li>
                 <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
               </ul>
@@ -82,30 +82,13 @@
         <div th:each="author : ${user.favouriteBookAuthors}">
           <p th:text="${author.toStringAuthorName()}"></p>
         </div>
-
-        <form th:action="@{/app/profile/add_favourite_author}" method="post">                              
-          <input type="text" name="authorName" th:value="${authorName}" placeholder="First Name Last Name">
-
-          <button type="submit" class="btn btn-success btn-sm">
-              Add favourite author
-          </button>
-        </form>
-
+        <p>Favourite Category:</p>
         <div th:each=" category : ${user.favouriteBookCategories}">
           <p th:text="${category.categoryName}"></p>
         </div>
-
-        <form th:action="@{/app/profile/add_favourite_category}" method="post">                              
-          <input type="text" name="categoryName" th:value="${categoryName}" placeholder="Category Name">
-
-          <button type="submit" class="btn btn-success btn-sm">
-              Add favourite category
-          </button>
-        </form>
-
-
-        
       </div>  
+      
+
     </div>
 </body>
 </html>

@@ -47,7 +47,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="details">Profile Details</a></li>
-              <li><a class="dropdown-item" href="book_offers">My Book Offers</a></li>
+              <li><a class="dropdown-item" href="my_book_offers">My Book Offers</a></li>
               <li><a class="dropdown-item" href="book_requests">My Book Requests</a></li>
               <li><hr class="dropdown-divider" /></li>
               <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
@@ -90,31 +90,7 @@
   </form>
 </div>
 
-<script>
-  let authorCount = 1;
 
-  function addAuthorField() {
-    authorCount++;
-    const newInputGroup = document.createElement('div');
-    newInputGroup.className = 'input-group mb-2';
-    newInputGroup.innerHTML = `
-      <input type="text"name="authors[__${index.index}__].firstName"  th:value="*{author.firstName}" class="form-control" id="authorFirstName" placeholder="First Name" required>
-      <input type="text"name="authors[__${index.index}__].lastName"  th:value="*{author.lastName}" class="form-control" id="authorLastName" placeholder="Last Name" required>
-      <button class="btn btn-outline-secondary" type="button" onclick="removeAuthorField(this)">Remove</button>
-    `;
-    document.getElementById('authorInputs').appendChild(newInputGroup);
-  }
-
-  function removeAuthorField(button) {
-    if (authorCount > 1) {
-      const inputGroup = button.parentElement;
-      inputGroup.parentElement.removeChild(inputGroup);
-      authorCount--;
-    } else {
-      alert("At least one author is required.");
-    }
-  }
-</script>
 </body>
 </html>
 

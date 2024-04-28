@@ -12,4 +12,6 @@ public interface BookRequestService {
     List<BookRequest> retrieveBookRequests(String username);
     List<BookRequest> retrieveRequestingUsers(int bookId);
 
+    void selectRequester(int requestId);
+
 }

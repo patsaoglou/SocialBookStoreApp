@@ -12,4 +12,5 @@ public interface BookDAO extends JpaRepository<Book, Integer> {
     public Book findById(int id);
     public List<Book> findByBookTitle(String bookTitle);
     public List<Book> findByBookTitleContaining(String bookTitle);
+    
 }

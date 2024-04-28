@@ -69,6 +69,11 @@ public class UserProfile {
         this.favouriteBookAuthors = favouriteBookAuthors;
     }
 
+    
+    public void addFavouriteBookAuthor(BookAuthor favouriteBookAuthor) {
+        this.favouriteBookAuthors.add(favouriteBookAuthor);
+    }
+
     public Set<BookCategory> getFavouriteBookCategories() {
         return favouriteBookCategories;
     }
@@ -76,6 +81,11 @@ public class UserProfile {
     public void setFavouriteBookCategories(Set<BookCategory> favouriteBookCategories) {
         this.favouriteBookCategories = favouriteBookCategories;
     }
+
+    public void addFavouriteBookCategory(BookCategory favouriteBookCategory) {
+        favouriteBookCategories.add(favouriteBookCategory);
+    }
+    
 
     public void setId(int id) {
         this.id = id;

@@ -14,4 +14,8 @@ public interface BookRequestDAO extends JpaRepository<BookRequest, Integer> {
     public List<BookRequest> findByRequestedBook(Book book);
     public List<BookRequest> findByRequester(UserProfile requester);
     public BookRequest findByRequestedBookAndRequester(Book book, UserProfile requester);
+    public BookRequest findByRequestId(int requestId);
+
+    
+    public void deleteByRequestedBook(Book book);
 }

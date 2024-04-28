@@ -6,5 +6,7 @@ public interface UserProfileService {
     
     public UserProfile retrieveUserProfile(String username); //ok
     public UserProfile registerUserProfileData(UserProfile profileData); //ok
-    // public UserProfile changeUserProfileData(String username, UserProfile profileDataChanges);
+    public void addFavouriteAuthor(String authorName, String username);
+    public void addFavouriteCategory(String categoryName, String username);
+
 } 

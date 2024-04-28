@@ -2,6 +2,8 @@ package com.SE2024.SocialBookStore.model;
 
 import java.util.Set;
 
+import org.springframework.security.access.method.P;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -73,6 +75,21 @@ public class Book {
 
     public void setBookCategory(BookCategory bookCategory) {
         this.bookCategory = bookCategory;
+    }
+
+    public String toStringAuthors(){
+        String authorsString = "";
+        int counter = 1;
+        for (BookAuthor author: authors){
+            authorsString += author.getFirstName()+" "+ author.getLastName();            
+            if (authors.size()>1 && authors.size()>counter){
+                authorsString +=", ";
+            }
+
+            counter++;
+        }
+
+        return authorsString;
     }
 
 }
