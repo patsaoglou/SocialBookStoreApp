@@ -37,13 +37,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="home">Home</a>
+              <a class="nav-link active" aria-current="page" href="/app/home">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="search">Search book</a>
+              <a class="nav-link active" aria-current="page" href="/app/search">Search book</a>
             </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="make_offer">Offer book</a>
+                <a class="nav-link active" aria-current="page" href="/app/profile/make_offer">Offer book</a>
               </li>
             <li class="nav-item dropdown">
               <a
@@ -72,17 +72,17 @@
       <div id="userDetails">
 
         <h2>User Details</h2>
-        <p>UserID: <span th:text="${user.id}"></span></p>
-        <p>Username: <span th:text="${user.username}"></span></p>
-        <p>Name: <span th:text="${user.firstName}"></span> <span th:text="${user.lastName}"></span></p>
-        <p>Address: <span th:text="${user.address}"></span></p>
-        <p>Age: <span th:text="${user.age}"></span></p>
-        <p>Telephone: <span th:text="${user.telephone}"></span></p>
-        <p>Favourite Authors:</p>
+        <p><b>UserID: </b><span th:text="${user.id}"></span></p>
+        <p><b>Username: </b><span th:text="${user.username}"></span></p>
+        <p><b>Name: </b><span th:text="${user.firstName}"></span> <span th:text="${user.lastName}"></span></p>
+        <p><b>Address: </b><span th:text="${user.address}"></span></p>
+        <p><b>Age: </b><span th:text="${user.age}"></span></p>
+        <p><b>Telephone: </b><span th:text="${user.telephone}"></span></p>
+        <p><b>Favourite Authors:</b></p>
         <div th:each="author : ${user.favouriteBookAuthors}">
           <p th:text="${author.toStringAuthorName()}"></p>
         </div>
-        <p>Favourite Category:</p>
+        <p><b>Favourite Category:</b></p>
         <div th:each=" category : ${user.favouriteBookCategories}">
           <p th:text="${category.categoryName}"></p>
         </div>

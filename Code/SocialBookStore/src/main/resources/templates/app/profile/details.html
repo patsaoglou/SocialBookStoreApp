@@ -71,14 +71,14 @@
     <div class="container">
       <div id="userDetails">
 
-        <h2>User Details</h2>
-        <p>UserID: <span th:text="${user.id}"></span></p>
-        <p>Username: <span th:text="${user.username}"></span></p>
-        <p>Name: <span th:text="${user.firstName}"></span> <span th:text="${user.lastName}"></span></p>
-        <p>Address: <span th:text="${user.address}"></span></p>
-        <p>Age: <span th:text="${user.age}"></span></p>
-        <p>Telephone: <span th:text="${user.telephone}"></span></p>
-        <p>Favourite Authors:</p>
+        <h2><b>User Details</b></h2>
+        <p><b>UserID: </b><span th:text="${user.id}"></span></p>
+        <p><b>Username: </b><span th:text="${user.username}"></span></p>
+        <p><b>Name: </b><span th:text="${user.firstName}"></span> <span th:text="${user.lastName}"></span></p>
+        <p><b>Address: </b><span th:text="${user.address}"></span></p>
+        <p><b>Age: </b><span th:text="${user.age}"></span></p>
+        <p><b>Telephone: </b><span th:text="${user.telephone}"></span></p>
+        <p><b>Favourite Authors:</b></p>
         <div th:each="author : ${user.favouriteBookAuthors}">
           <p th:text="${author.toStringAuthorName()}"></p>
         </div>
@@ -90,7 +90,7 @@
               Add favourite author
           </button>
         </form>
-
+        <p><b>Favourite Category:</b></p>
         <div th:each=" category : ${user.favouriteBookCategories}">
           <p th:text="${category.categoryName}"></p>
         </div>
