@@ -83,38 +83,37 @@
     <div class="container " style="width: 50%; margin-top:3rem;">
         <div class="py-2 text-center ">  
             <h1 class="b">Search</h1>  
-          <p class="lead" style="margin-top:1rem">Select from the field below to do a targeted Book Search.</p>
+          <p class="lead" style="margin-top:1rem">Select from the fields below to do a targeted Book Search.</p>
         </div>
-        <form>
-    <div class="form-group">
-        <label for="exampleFormControlInput1">Search Keyword</label>
-        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Lord of The Rings or Rings/Lord">
-    </div>
-    <div class="form-group">
-        <label for="exampleFormControlSelect1">Search Strategy</label>
-        <select class="form-control" id="exampleFormControlSelect1">
-        <option>Approximate</option>
-        <option>Exact</option>
-        </select>
-    </div>
-    <div class="form-check" style="margin-top: 1rem;">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-            Recommend by favourite Authors
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-        <label class="form-check-label" for="flexRadioDefault2">
-            Recommend by favourite Categories
-        </label>
-    </div>
-    <div class="justify-content-center">
-        <div class="d-grid gap-2">
-            <button class="btn btn-primary" type="button" style="margin-top: 1rem;">Search</button>
+
+
+        <form th:action="@{/app/search_submit}" method="get">
+          <div class="form-group">
+              <label for="exampleFormControlInput1">Search Keyword</label>
+              <input type="text" name="searchKeyword" class="form-control" id="exampleFormControlInput1" placeholder="Lord of The Rings or Rings/Lord" th:value="${searchKeyword}">
           </div>
-    </div>
-    </form>
+          <div class="form-group">
+              <label for="exampleFormControlSelect1">Search Strategy</label>
+              <select class="form-control" id="exampleFormControlSelect1" name="searchStrategy">
+              <option value="0" th:selected="${searchStrategy==0}">Approximate</option>
+              <option value="1" th:selected="${searchStrategy==1}">Exact</option>
+              </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Recommnedations</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="recommendOption">
+              <option value="0" th:selected="${recommendOption==0}">None</option>
+              <option value="1" th:selected="${recommendOption==1}">Recommend by favourite Authors</option>
+            <option value="2" th:selected="${recommendOption==2}">Recommend by favourite Categories</option>
+            </select>
+          </div>
+            <div class="justify-content-center">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">Search</button>
+                  </div>
+            </div>
+          </form>
+          
     <div class="py-5 text-center ">  
         <h1 class="b">Results</h1>  
     </div>

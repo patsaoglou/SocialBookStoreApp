@@ -6,12 +6,13 @@ import com.SE2024.SocialBookStore.model.Book;
 
 public interface BookService {
 
-    List<Book> retrieveBookOffers(String username); // ok
-    Book addBookOffer(Book bookData, String authors, String username); // ok 
-    void deleteBookOffer(String username, int bookId); //ok
+    List<Book> retrieveBookOffers(String username);
+    Book addBookOffer(Book bookData, String authors, String username);
+    void deleteBookOffer(String username, int bookId);
 
-    // added
     Book getBookById(int bookId);
-    List<Book> findBooksNotOfferedByUser(String username);
+    List<Book> showAvailableBooksToUser(String username);
+
+    List<Book> searchBooks(String keyword, int strategy, int recommendations);
     
 } 

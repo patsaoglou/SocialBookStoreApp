@@ -22,6 +22,7 @@ import com.SE2024.SocialBookStore.dao.UserProfileDAO;
 import com.SE2024.SocialBookStore.model.Book;
 import com.SE2024.SocialBookStore.model.BookAuthor;
 import com.SE2024.SocialBookStore.model.BookCategory;
+import com.SE2024.SocialBookStore.model.BookRequest;
 import com.SE2024.SocialBookStore.model.UserProfile;
 
 @Service
@@ -44,6 +45,8 @@ public class BookSeviceImpl implements BookService{
     
     @Autowired
     BookRequestDAO bookRequestDAO;
+
+    SearchStrategy searchStrategy;
 
     public Book addBookOffer(Book bookData, String authors, String username){
 
@@ -136,8 +139,27 @@ public class BookSeviceImpl implements BookService{
         return bookDAO.findById(bookId);
     }
 
-    public List<Book> findBooksNotOfferedByUser(String username) {
+    public List<Book> showAvailableBooksToUser(String username){
         UserProfile user = userProfileDAO.findByUsername(username);
+
+        List<Book> socialBooks = findBooksNotOfferedByUser(user);
+
+        Iterator<Book> iterator = socialBooks.iterator();
+
+        while (iterator.hasNext()) {
+            Book book = iterator.next();
+            
+            if (!bookRequestDAO.findByRequestedBookAndNotStatusOrRequester("PENDING", book ,user).isEmpty()) {
+                iterator.remove();
+            }
+
+
+        }
+
+        return socialBooks;
+    }
+
+    public List<Book> findBooksNotOfferedByUser(UserProfile user) {
         List<Book> userBooks = user.getBookOffers();
 
         List<Book> books = bookDAO.findAll();
@@ -152,5 +174,13 @@ public class BookSeviceImpl implements BookService{
 
         return books;
     }
+
+
+    public List<Book> searchBooks(String keyword, int strategy, int recommendations){
+
+
+        return null;
+    }
+
 
 }

@@ -52,7 +52,7 @@ public class SocialBookViewsController {
 
     @GetMapping("/home")
     public String getHome(Model model) {
-        List<Book> books = bookService.findBooksNotOfferedByUser(getAuthenticatedUsername());
+        List<Book> books = bookService.showAvailableBooksToUser(getAuthenticatedUsername());
 
         model.addAttribute("userBookOffers", books);
 
@@ -79,16 +79,25 @@ public class SocialBookViewsController {
 
         return "app/user_details";
     }
-
     
     @GetMapping("/search")
     public String getSearch() {
         return "app/search";
     }
-    
-    @GetMapping("/book_details")
-    public String getBookDetails() {
-        return "app/book_details";
-    }
-    
+
+    @GetMapping("/search_submit")
+    public String getSearchSubmit(@RequestParam(name = "searchKeyword", required = false) String keyword, 
+                                    @RequestParam(name = "searchStrategy", required = false) int strategy, 
+                                    @RequestParam(name = "recommendOption", required = false) int option, Model model) {
+        
+        model.addAttribute("searchKeyword", keyword);
+        model.addAttribute("searchStrategy", strategy);
+        model.addAttribute("recommendOption", option);
+
+        logger.info("Keyword: "+ keyword);
+        logger.info("Strategy: "+ strategy);
+        logger.info("Option: "+ option);
+        
+        return "app/search";
+    }    
 }
