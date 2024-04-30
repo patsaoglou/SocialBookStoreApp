@@ -13,25 +13,25 @@ import com.SE2024.SocialBookStore.model.BookRequest;
 import com.SE2024.SocialBookStore.model.UserProfile;
 
 @Service
-public class BookRequestServiceImpl implements BookRequestService{
-    
+public class BookRequestServiceImpl implements BookRequestService {
+
     @Autowired
     BookDAO bookDAO;
-    
+
     @Autowired
     UserProfileDAO userProfileDAO;
 
     @Autowired
     BookRequestDAO bookRequestDAO;
 
-    public void requestBook(int bookId, String username){
+    public void requestBook(int bookId, String username) {
         UserProfileServiceValidator userValidator = new UserProfileServiceValidator(userProfileDAO);
         BookServiceValidator bookValidator = new BookServiceValidator(bookDAO);
 
         UserProfile requester = userValidator.validateUsername(username);
         Book requestedBook = bookValidator.validateBookExistance(bookId);
 
-        if (requester.isBookInUserBookOffers(requestedBook) == true){
+        if (requester.isBookInUserBookOffers(requestedBook) == true) {
             throw new IllegalArgumentException("User requests from his/her book offers");
         }
 
@@ -40,7 +40,7 @@ public class BookRequestServiceImpl implements BookRequestService{
 
     }
 
-    public void deleteBookRequest(int bookId, String username){
+    public void deleteBookRequest(int bookId, String username) {
         UserProfileServiceValidator userValidator = new UserProfileServiceValidator(userProfileDAO);
         BookServiceValidator bookValidator = new BookServiceValidator(bookDAO);
 
@@ -49,38 +49,47 @@ public class BookRequestServiceImpl implements BookRequestService{
 
         BookRequest bookRequestToDelete = bookRequestDAO.findByRequestedBookAndRequester(requestedBook, requester);
 
-        if (bookRequestToDelete == null){
+        if (bookRequestToDelete == null) {
             throw new IllegalArgumentException("Book Request Specified does not exist");
+        }
+
+        if (bookRequestToDelete.getStatus().equals("ACCEPTED")) {
+            List<BookRequest> restRequests = bookRequestDAO.findByRequestedBook(requestedBook);
+            for (BookRequest request : restRequests) {
+                if (!request.equals(bookRequestToDelete)) {
+                    bookRequestDAO.delete(request);
+                }
+            }
+
         }
 
         bookRequestDAO.delete(bookRequestToDelete);
     }
 
-
-    public List<BookRequest> retrieveBookRequests(String username){
+    public List<BookRequest> retrieveBookRequests(String username) {
         UserProfileServiceValidator userValidator = new UserProfileServiceValidator(userProfileDAO);
         UserProfile user = userValidator.validateUsername(username);
-        
+
         return bookRequestDAO.findByRequester(user);
     }
 
-    public List<BookRequest> retrieveRequestingUsers(int bookId){
+    public List<BookRequest> retrieveRequestingUsers(int bookId) {
         BookServiceValidator bookValidator = new BookServiceValidator(bookDAO);
         Book requestedBook = bookValidator.validateBookExistance(bookId);
 
         return bookRequestDAO.findByRequestedBook(requestedBook);
     }
 
-    public void selectRequester(int requestId){
+    public void selectRequester(int requestId) {
         BookRequest accepted = bookRequestDAO.findByRequestId(requestId);
 
         List<BookRequest> allRequests = bookRequestDAO.findByRequestedBook(accepted.getRequestedBook());
 
-        for (BookRequest request: allRequests){
-            if (request.getRequestId() != accepted.getRequestId()){
-                request.setStatus("DECLINED"); 
-            }else{
-                request.setStatus("ACCEPTED"); 
+        for (BookRequest request : allRequests) {
+            if (request.getRequestId() != accepted.getRequestId()) {
+                request.setStatus("DECLINED");
+            } else {
+                request.setStatus("ACCEPTED");
             }
         }
         bookRequestDAO.saveAll(allRequests);

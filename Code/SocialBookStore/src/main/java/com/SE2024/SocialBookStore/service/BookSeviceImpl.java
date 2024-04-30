@@ -1,6 +1,5 @@
 package com.SE2024.SocialBookStore.service;
 
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,14 +25,13 @@ import com.SE2024.SocialBookStore.model.BookRequest;
 import com.SE2024.SocialBookStore.model.UserProfile;
 
 @Service
-public class BookSeviceImpl implements BookService{
-
+public class BookSeviceImpl implements BookService {
 
     private static final Logger logger = LoggerFactory.getLogger(BookSeviceImpl.class);
 
     @Autowired
     BookDAO bookDAO;
-    
+
     @Autowired
     BookAuthorDAO bookAuthorDAO;
 
@@ -42,13 +40,13 @@ public class BookSeviceImpl implements BookService{
 
     @Autowired
     UserProfileDAO userProfileDAO;
-    
+
     @Autowired
     BookRequestDAO bookRequestDAO;
 
     SearchStrategy searchStrategy;
 
-    public Book addBookOffer(Book bookData, String authors, String username){
+    public Book addBookOffer(Book bookData, String authors, String username) {
 
         List<String> authorList = Arrays.asList(authors.split(","));
         Set<BookAuthor> bookAuthors = new HashSet();
@@ -62,22 +60,22 @@ public class BookSeviceImpl implements BookService{
         bookData.setAuthors(bookAuthors);
 
         UserProfileServiceValidator userValidator = new UserProfileServiceValidator(userProfileDAO);
-        BookServiceValidator bookValidator = new BookServiceValidator(bookDAO);    
+        BookServiceValidator bookValidator = new BookServiceValidator(bookDAO);
         userValidator.validateUsername(username);
         bookValidator.validateBookObject(bookData);
 
         bookData.setAuthors(addAuthors(bookData.getAuthors()));
         bookData.setBookCategory(addBookCategory(bookData.getBookCategory()));
-        
+
         Book newBook = bookDAO.save(bookData);
         addBookToUser(newBook, username);
 
         return newBook;
     }
 
-    private BookCategory addBookCategory(BookCategory bookCategory){
+    private BookCategory addBookCategory(BookCategory bookCategory) {
         BookCategory bookCategoryFromDAO = bookCategoryDAO.findByCategoryName(bookCategory.getCategoryName());
-        if ( bookCategoryFromDAO == null){
+        if (bookCategoryFromDAO == null) {
             bookCategoryDAO.save(bookCategory);
             bookCategoryFromDAO = bookCategoryDAO.findByCategoryName(bookCategory.getCategoryName());
         }
@@ -85,15 +83,16 @@ public class BookSeviceImpl implements BookService{
 
     }
 
-    private Set<BookAuthor> addAuthors(Set<BookAuthor> authors){
+    private Set<BookAuthor> addAuthors(Set<BookAuthor> authors) {
         Set<BookAuthor> authorsFromDAO = new HashSet<>();
-        for (BookAuthor author: authors){
-            BookAuthor authorFromDAO = bookAuthorDAO.findByFirstNameAndLastName(author.getFirstName(), author.getLastName());
-            if ( authorFromDAO == null){
+        for (BookAuthor author : authors) {
+            BookAuthor authorFromDAO = bookAuthorDAO.findByFirstNameAndLastName(author.getFirstName(),
+                    author.getLastName());
+            if (authorFromDAO == null) {
                 bookAuthorDAO.save(author);
                 authorFromDAO = bookAuthorDAO.findByFirstNameAndLastName(author.getFirstName(), author.getLastName());
                 authorsFromDAO.add(authorFromDAO);
-            }else{
+            } else {
                 authorsFromDAO.add(authorFromDAO);
             }
         }
@@ -101,45 +100,45 @@ public class BookSeviceImpl implements BookService{
         return authorsFromDAO;
     }
 
-    private void addBookToUser(Book newBook, String username){
+    private void addBookToUser(Book newBook, String username) {
         UserProfile user = userProfileDAO.findByUsername(username);
 
         user.addBookToBookOffersList(newBook);
         userProfileDAO.save(user);
     }
-      
+
     @Transactional
-    public void deleteBookOffer(String username, int bookId){
+    public void deleteBookOffer(String username, int bookId) {
         UserProfileServiceValidator userValidator = new UserProfileServiceValidator(userProfileDAO);
-        UserProfile user =  userValidator.validateUsername(username);
+        UserProfile user = userValidator.validateUsername(username);
         Book bookToDelete = bookDAO.findById(bookId);
 
-        if (bookToDelete == null){
+        if (bookToDelete == null) {
             throw new IllegalArgumentException("Book to delete doesn't exist");
-        }else{
-            if (user.deleteOfferFromUser(bookToDelete) == true){
+        } else {
+            if (user.deleteOfferFromUser(bookToDelete) == true) {
                 userProfileDAO.save(user);
                 bookRequestDAO.deleteByRequestedBook(bookToDelete);
                 bookDAO.delete(bookToDelete);
-            }else{
+            } else {
                 throw new IllegalArgumentException("Book does not belong to user");
 
             }
         }
     }
 
-    public List<Book> retrieveBookOffers(String username){
+    public List<Book> retrieveBookOffers(String username) {
         UserProfileServiceValidator userValidator = new UserProfileServiceValidator(userProfileDAO);
         UserProfile user = userValidator.validateUsername(username);
 
         return user.getBookOffers();
     }
 
-    public Book getBookById(int bookId){
+    public Book getBookById(int bookId) {
         return bookDAO.findById(bookId);
     }
 
-    public List<Book> showAvailableBooksToUser(String username){
+    public List<Book> showAvailableBooksToUser(String username) {
         UserProfile user = userProfileDAO.findByUsername(username);
 
         List<Book> socialBooks = findBooksNotOfferedByUser(user);
@@ -148,11 +147,11 @@ public class BookSeviceImpl implements BookService{
 
         while (iterator.hasNext()) {
             Book book = iterator.next();
-            
-            if (!bookRequestDAO.findByRequestedBookAndNotStatusOrRequester("PENDING", book ,user).isEmpty()) {
+
+            if (!bookRequestDAO.findByRequestedBookAndNotStatusOrRequester("ACCEPTED", book.getId(), user.getId())
+                    .isEmpty()) {
                 iterator.remove();
             }
-
 
         }
 
@@ -175,12 +174,9 @@ public class BookSeviceImpl implements BookService{
         return books;
     }
 
-
-    public List<Book> searchBooks(String keyword, int strategy, int recommendations){
-
+    public List<Book> searchBooks(String keyword, int strategy, int recommendations) {
 
         return null;
     }
-
 
 }
