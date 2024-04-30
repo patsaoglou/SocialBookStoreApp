@@ -1,5 +1,6 @@
 package com.SE2024.SocialBookStore.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -141,28 +142,28 @@ public class BookSeviceImpl implements BookService {
     public List<Book> showAvailableBooksToUser(String username) {
         UserProfile user = userProfileDAO.findByUsername(username);
 
-        List<Book> socialBooks = findBooksNotOfferedByUser(user);
+        List<Book> socialBooks = findBooksNotOfferedByUser(user.getBookOffers(), bookDAO.findAll());
+        socialBooks = findByRequestedBookAndNotStatusOrRequester(socialBooks, user.getId());      
 
-        Iterator<Book> iterator = socialBooks.iterator();
+        return socialBooks;
+    }
+
+    public List<Book> findByRequestedBookAndNotStatusOrRequester(List<Book> userBooks, int userId) {
+        Iterator<Book> iterator = userBooks.iterator();
 
         while (iterator.hasNext()) {
             Book book = iterator.next();
 
-            if (!bookRequestDAO.findByRequestedBookAndNotStatusOrRequester("ACCEPTED", book.getId(), user.getId())
+            if (!bookRequestDAO.findByRequestedBookAndNotStatusOrRequester("ACCEPTED", book.getId(), userId)
                     .isEmpty()) {
                 iterator.remove();
             }
 
         }
-
-        return socialBooks;
+        return userBooks;
     }
 
-    public List<Book> findBooksNotOfferedByUser(UserProfile user) {
-        List<Book> userBooks = user.getBookOffers();
-
-        List<Book> books = bookDAO.findAll();
-
+    public List<Book> findBooksNotOfferedByUser(List<Book> userBooks, List<Book> books) {
         Iterator<Book> iterator = books.iterator();
         while (iterator.hasNext()) {
             Book book = iterator.next();
@@ -173,10 +174,76 @@ public class BookSeviceImpl implements BookService {
 
         return books;
     }
+    
+    public List<Book> searchBooks(String keyword, String authors ,int strategy, String username){
+        List<Book> searchBooks;
+        if (authors == null || authors.isEmpty()){
+            return null;
+        }
 
-    public List<Book> searchBooks(String keyword, int strategy, int recommendations) {
+        UserProfile user = userProfileDAO.findByUsername(username);
+        List<String> authorList = Arrays.asList(authors.split(","));
 
+        if (strategy == 1){
+            TemplateSearchStrategy exactSearch = new ExactSearchStrategy();
+            searchBooks = exactSearch.search(keyword, getAuthorsFromDAO(authorList), bookDAO);
+            searchBooks = findBooksNotOfferedByUser(user.getBookOffers(), searchBooks);
+            searchBooks = findByRequestedBookAndNotStatusOrRequester(searchBooks, user.getId());
+            return searchBooks;
+        }else if (strategy == 0){
+            TemplateSearchStrategy approximateSearch = new ApproximateSearchStrategy();
+            searchBooks = approximateSearch.search(keyword, getAuthorsFromDAO(authorList), bookDAO);
+            searchBooks = findBooksNotOfferedByUser(user.getBookOffers(), searchBooks);
+            searchBooks = findByRequestedBookAndNotStatusOrRequester(searchBooks, user.getId());
+            return searchBooks;
+        }
+
+        
         return null;
+    }
+
+    private List<BookAuthor> getAuthorsFromDAO(List<String> authorList){
+        List<BookAuthor> authorsFromDAO = new ArrayList<>();
+
+        for (String authorName: authorList){
+            List<String> authorFirstLast = Arrays.asList(authorName.split(" "));
+
+            BookAuthor author = bookAuthorDAO.findByFirstNameAndLastName(authorFirstLast.get(0), authorFirstLast.get(1));
+            if (author == null){
+                return null;
+            }
+            authorsFromDAO.add(author);
+        }
+
+        return authorsFromDAO;
+    }
+
+    public List<Book> recommendBooksByFavouriteCategories(String username){
+        List<Book> recommendedBooks = new ArrayList<>();
+        Set<BookCategory> favouriteCategories = userProfileDAO.findByUsername(username).getFavouriteBookCategories();
+
+        for(BookCategory category:favouriteCategories){
+            recommendedBooks.addAll(bookDAO.findByBookCategory(category));
+        }
+
+        findBooksNotOfferedByUser(userProfileDAO.findByUsername(username).getBookOffers(), recommendedBooks);
+        findByRequestedBookAndNotStatusOrRequester(recommendedBooks, userProfileDAO.findByUsername(username).getId());
+        
+        return recommendedBooks;   
+
+    }
+
+    public List<Book> recommendBooksByFavouriteBookAuthors(String username){
+        List<Book> recommendedBooks = new ArrayList<>();
+        Set<BookAuthor> favouriteAuthors = userProfileDAO.findByUsername(username).getFavouriteBookAuthors();
+
+        for(BookAuthor author: favouriteAuthors){
+            recommendedBooks.addAll(bookDAO.findByAuthors(author));
+        }
+        findBooksNotOfferedByUser(userProfileDAO.findByUsername(username).getBookOffers(), recommendedBooks);
+        findByRequestedBookAndNotStatusOrRequester(recommendedBooks,userProfileDAO.findByUsername(username).getId());
+        
+        return recommendedBooks;   
     }
 
 }

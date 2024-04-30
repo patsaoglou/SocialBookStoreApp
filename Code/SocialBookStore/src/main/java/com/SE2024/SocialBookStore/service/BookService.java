@@ -13,6 +13,9 @@ public interface BookService {
     Book getBookById(int bookId);
     List<Book> showAvailableBooksToUser(String username);
 
-    List<Book> searchBooks(String keyword, int strategy, int recommendations);
+    List<Book> searchBooks(String keyword, String authors ,int strategy, String username);
+    List<Book> recommendBooksByFavouriteCategories(String username);
+    List<Book> recommendBooksByFavouriteBookAuthors(String username);
+
     
 } 

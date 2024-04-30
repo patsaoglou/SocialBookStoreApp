@@ -52,6 +52,9 @@
               <a class="nav-link active" aria-current="page" href="home">Home</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="recommend_books">Recommendations</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="search">Search book</a>
             </li>
               <li class="nav-item">
@@ -89,8 +92,12 @@
 
         <form th:action="@{/app/search_submit}" method="get">
           <div class="form-group">
-              <label for="exampleFormControlInput1">Search Keyword</label>
+              <label for="exampleFormControlInput1">Search Book Title Keyword</label>
               <input type="text" name="searchKeyword" class="form-control" id="exampleFormControlInput1" placeholder="Lord of The Rings or Rings/Lord" th:value="${searchKeyword}">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Book Authors</label>
+            <input type="text" name="authors" class="form-control" id="exampleFormControlInput1" placeholder="First Name Last Name,Firs..." th:value="${authors}">
           </div>
           <div class="form-group">
               <label for="exampleFormControlSelect1">Search Strategy</label>
@@ -99,69 +106,62 @@
               <option value="1" th:selected="${searchStrategy==1}">Exact</option>
               </select>
           </div>
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Recommnedations</label>
-            <select class="form-control" id="exampleFormControlSelect1" name="recommendOption">
-              <option value="0" th:selected="${recommendOption==0}">None</option>
-              <option value="1" th:selected="${recommendOption==1}">Recommend by favourite Authors</option>
-            <option value="2" th:selected="${recommendOption==2}">Recommend by favourite Categories</option>
-            </select>
-          </div>
             <div class="justify-content-center">
                 <div class="d-grid gap-2">
                     <button class="btn btn-primary" type="submit" style="margin-top: 1rem;">Search</button>
                   </div>
             </div>
           </form>
-          
-    <div class="py-5 text-center ">  
+        <div class="container" style="width: 80%; margin-top:1rem;">
+          <div class="row justify-content-center">
+              <div class="col-12 col-md-6">
+                  <h4 class="text-center">Are you bored of typing?</h4>
+                  <p class="text-center">Let us <a th:href="@{recommend_books}">recommend</a> you some books!</p>
+              </div> 
+          </div>
+        </div>
+    <div class="py-1 text-center ">  
         <h1 class="b">Results</h1>  
     </div>
     
     
     <table id="userBookOffers" class="table table-bordered table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th>Book ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Action</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Sample Title</td>
-                <td>Sample Author</td>
-                <td>
-                    <button type="button" class="btn btn-primary">View Details</button>
+      <thead class="thead-dark">
+          <tr>
+              <th>Book ID</th>
+              <th>Title</th>
+              <th>Authors</th>
+              <th>Action</th>
+              
+          </tr>
+      </thead>
+      <tbody>
+        <tr th:each="book : ${userBookOffers}">
+  
+          <td th:text="${book.id}">	
+          <td th:text="${book.bookTitle}" >	
+          <td th:text="${book.toStringAuthors}" >	
 
-                    <button type="button" class="btn btn-success">Request</button>
-                </td>
-            </tr>
-        </tbody>
+                        
+          <td>
+            
+            <form th:action="@{/app/request_book}" method="post">
+              
+              <input type="hidden" name="bookId" th:value="${book.id}">
+              
+              <a th:href="@{/app/get_book_details(bookId=${book.id})}" class="btn btn-info btn-sm">
+                  Book Details
+              </a>
+              
+              <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to make a request for this book offer?')">
+                  Request Book
+              </button>
+            </form>            
+          </td>         
+        </tr>
+      </tbody>
+  </table>
     </div>
-   
-    
-  <script>
-
-    fetch('http://localhost:8080/user/get-profile')
-      .then(response => response.json())
-      .then(user => {
-        const userDetails = document.getElementById('userDetails');
-        userDetails.innerHTML = `
-          <h2>User Details</h2>
-          <p>UserID: ${user.id}</p>
-          <p>Username: ${user.username}</p>
-          <p>Name: ${user.firstName} ${user.lastName}</p>
-          <p>Address: ${user.address}</p>
-          <p>Age: ${user.age}</p>
-          <p>Telephone: ${user.telephone}</p>
-        `;
-      })
-      .catch(error => console.error('Error fetching user data:', error));
-  </script>
   
   </body>
 </html>

@@ -88,16 +88,25 @@ public class SocialBookViewsController {
     @GetMapping("/search_submit")
     public String getSearchSubmit(@RequestParam(name = "searchKeyword", required = false) String keyword, 
                                     @RequestParam(name = "searchStrategy", required = false) int strategy, 
-                                    @RequestParam(name = "recommendOption", required = false) int option, Model model) {
+                                    @RequestParam(name = "authors", required = false) String authors, Model model) {
         
         model.addAttribute("searchKeyword", keyword);
         model.addAttribute("searchStrategy", strategy);
-        model.addAttribute("recommendOption", option);
+        model.addAttribute("authors", authors);
 
-        logger.info("Keyword: "+ keyword);
-        logger.info("Strategy: "+ strategy);
-        logger.info("Option: "+ option);
+
+
+        model.addAttribute("userBookOffers", bookService.searchBooks(keyword, authors, strategy, getAuthenticatedUsername()));
         
         return "app/search";
+    }   
+
+    @GetMapping("/recommend_books")
+    public String getRecommendedBook(Model model) {
+        
+        model.addAttribute("categoryBooks", bookService.recommendBooksByFavouriteCategories(getAuthenticatedUsername()));
+        model.addAttribute("authorBooks", bookService.recommendBooksByFavouriteBookAuthors(getAuthenticatedUsername()));
+        
+        return "app/recommendations";
     }    
 }

@@ -2,7 +2,6 @@ package com.SE2024.SocialBookStore.model;
 
 import java.util.Set;
 
-import org.springframework.security.access.method.P;
 
 import jakarta.persistence.*;
 

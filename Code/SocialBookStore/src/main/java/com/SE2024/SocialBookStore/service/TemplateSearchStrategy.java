@@ -1,35 +1,43 @@
 package com.SE2024.SocialBookStore.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.SE2024.SocialBookStore.dao.BookDAO;
-import com.SE2024.SocialBookStore.dao.BookRequestDAO;
-import com.SE2024.SocialBookStore.dao.UserProfileDAO;
-import com.SE2024.SocialBookStore.dtos.BookAuthor;
+import com.SE2024.SocialBookStore.model.BookAuthor;
 import com.SE2024.SocialBookStore.model.Book;
-import com.SE2024.SocialBookStore.model.BookCategory;
 
 public abstract class TemplateSearchStrategy implements SearchStrategy {
     
     @Autowired
-    BookDAO bookDao;
+    BookDAO bookDao;   
+    
+    public List<Book> search(String keyword, List<BookAuthor> authors, BookDAO bookDao){
+        this.bookDao = bookDao;
+        List<Book> initial_search_results = new ArrayList<>();
 
-    @Autowired 
-    BookRequestDAO bookRequestDAO;
+        if (authors == null){
+            return null;
+        }
+        
+        initial_search_results = makeInitialListOfBooks(keyword);
 
-    @Autowired
-    UserProfileDAO userProfileDAO;
-
-    // public List<Book> search(String keyword, int strategy, int recommendations){
-    //     List<Book> initial_search_results = makeInitialListOfBooks(keyword);
-    // }   
+        Iterator<Book> iterator = initial_search_results.iterator();
+        while (iterator.hasNext()) {
+            Book book = iterator.next();
+        
+            if (!checkIfAuthorsMatch(authors, book)) {
+                iterator.remove();
+            }
+        }
+        return initial_search_results;
+    }   
 
     public abstract List<Book> makeInitialListOfBooks(String keyword);
-    public abstract boolean checkIfAuthorsMatch(String keyword);
-    public abstract boolean checkIfCategoriesMatch(String keyword);
-
-
-
+    public abstract boolean checkIfAuthorsMatch(List<BookAuthor> authors, Book book);
 }
