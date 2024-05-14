@@ -51,6 +51,9 @@ public class UserProfile {
     private  Set<BookCategory> favouriteBookCategories;
 
     public UserProfile() {
+        this.favouriteBookAuthors = new HashSet<>();
+        this.bookOffers = new ArrayList<>();
+        this.favouriteBookCategories = new HashSet<>();
     }
 
 	public List<Book> getBookOffers() {

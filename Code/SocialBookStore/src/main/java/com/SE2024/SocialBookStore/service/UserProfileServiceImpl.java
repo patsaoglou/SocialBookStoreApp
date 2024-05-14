@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.SE2024.SocialBookStore.dao.BookAuthorDAO;
 import com.SE2024.SocialBookStore.dao.BookCategoryDAO;
 import com.SE2024.SocialBookStore.dao.UserProfileDAO;
+import com.SE2024.SocialBookStore.dtos.UserProfileDTO;
+import com.SE2024.SocialBookStore.mappers.UserProfileMapper;
 import com.SE2024.SocialBookStore.model.BookAuthor;
 import com.SE2024.SocialBookStore.model.BookCategory;
 import com.SE2024.SocialBookStore.model.UserProfile;
@@ -25,19 +27,20 @@ public class UserProfileServiceImpl implements UserProfileService{
     @Autowired
     BookAuthorDAO bookAuthorDAO;
     
-    public UserProfile registerUserProfileData(UserProfile profileData){
+    public UserProfileDTO registerUserProfileData(UserProfileDTO userProfile){
         UserProfileServiceValidator validator = new UserProfileServiceValidator(userProfileDAO);
-        validator.validateUserProfileObject(profileData);
-        userProfileDAO.save(profileData);
+        validator.validateUserProfileObject(UserProfileMapper.toEntity(userProfile));
+        UserProfile newUser = userProfileDAO.save(UserProfileMapper.toEntity(userProfile));
 
-        return userProfileDAO.findByUsername(profileData.getUsername());        
+        
+        return UserProfileMapper.toDTO(userProfileDAO.findByUsername(newUser.getUsername()));        
     }
     
-    public UserProfile retrieveUserProfile(String username){
+    public UserProfileDTO retrieveUserProfile(String username){
         UserProfileServiceValidator validator = new UserProfileServiceValidator(userProfileDAO);
         UserProfile user = validator.validateUsername(username);
 
-        return user;        
+        return UserProfileMapper.toDTO(user);        
     }
 
     public void addFavouriteAuthor(String authorName, String username){

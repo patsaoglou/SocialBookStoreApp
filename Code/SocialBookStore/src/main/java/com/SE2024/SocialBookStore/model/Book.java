@@ -1,5 +1,7 @@
 package com.SE2024.SocialBookStore.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -32,6 +34,8 @@ public class Book {
     private BookCategory bookCategory;
 
     public Book() {
+        authors = new HashSet<>();
+        bookCategory = new BookCategory();
     }
 
     public int getId() {

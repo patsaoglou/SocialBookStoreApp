@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.SE2024.SocialBookStore.dtos.UserProfileDTO;
 import com.SE2024.SocialBookStore.model.User;
 import com.SE2024.SocialBookStore.model.UserProfile;
 import com.SE2024.SocialBookStore.service.UserProfileService;
 import com.SE2024.SocialBookStore.service.UserService;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
 
 @Controller
@@ -34,13 +33,13 @@ public class AuthViewsController {
     @GetMapping("/register_user")
     public String getRegisterUser(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("userProfile", new UserProfile());
+        model.addAttribute("userProfile", new UserProfileDTO());
 
         return "/auth/register_user";
     }
 
     @PostMapping("/register_user_submit")
-    public String registerUser(@ModelAttribute("user") User user, @ModelAttribute("userProfile") UserProfile userProfile, Model model) {
+    public String registerUser(@ModelAttribute("user") User user, @ModelAttribute("userProfile") UserProfileDTO userProfile, Model model) {
         
         if(userService.isUserPresent(user)){
 

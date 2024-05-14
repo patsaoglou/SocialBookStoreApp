@@ -1,6 +1,8 @@
 package com.SE2024.SocialBookStore.service;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.SE2024.SocialBookStore.dao.BookDAO;
 import com.SE2024.SocialBookStore.dao.BookRequestDAO;
 import com.SE2024.SocialBookStore.dao.UserProfileDAO;
+import com.SE2024.SocialBookStore.dtos.BookRequestDTO;
+import com.SE2024.SocialBookStore.mappers.BookRequestMapper;
 import com.SE2024.SocialBookStore.model.Book;
 import com.SE2024.SocialBookStore.model.BookRequest;
 import com.SE2024.SocialBookStore.model.UserProfile;
@@ -66,18 +70,22 @@ public class BookRequestServiceImpl implements BookRequestService {
         bookRequestDAO.delete(bookRequestToDelete);
     }
 
-    public List<BookRequest> retrieveBookRequests(String username) {
+    public List<BookRequestDTO> retrieveBookRequests(String username) {
         UserProfileServiceValidator userValidator = new UserProfileServiceValidator(userProfileDAO);
         UserProfile user = userValidator.validateUsername(username);
 
-        return bookRequestDAO.findByRequester(user);
+        return bookRequestDAO.findByRequester(user).stream()
+                .map(BookRequestMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public List<BookRequest> retrieveRequestingUsers(int bookId) {
+    public List<BookRequestDTO> retrieveRequestingUsers(int bookId) {
         BookServiceValidator bookValidator = new BookServiceValidator(bookDAO);
         Book requestedBook = bookValidator.validateBookExistance(bookId);
 
-        return bookRequestDAO.findByRequestedBook(requestedBook);
+        return bookRequestDAO.findByRequestedBook(requestedBook).stream()
+                .map(BookRequestMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public void selectRequester(int requestId) {

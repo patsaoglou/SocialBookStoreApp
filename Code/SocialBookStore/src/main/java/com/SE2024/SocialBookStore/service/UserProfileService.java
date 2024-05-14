@@ -1,12 +1,11 @@
 package com.SE2024.SocialBookStore.service;
 
-import com.SE2024.SocialBookStore.model.UserProfile;
+import com.SE2024.SocialBookStore.dtos.UserProfileDTO;
 
 public interface UserProfileService {
     
-    public UserProfile retrieveUserProfile(String username); //ok
-    public UserProfile registerUserProfileData(UserProfile profileData); //ok
+    public UserProfileDTO retrieveUserProfile(String username);
+    public UserProfileDTO registerUserProfileData(UserProfileDTO userProfile);
     public void addFavouriteAuthor(String authorName, String username);
     public void addFavouriteCategory(String categoryName, String username);
-
 } 

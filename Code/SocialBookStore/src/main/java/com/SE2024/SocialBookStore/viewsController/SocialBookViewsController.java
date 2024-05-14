@@ -8,20 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.SE2024.SocialBookStore.dtos.SearchFormDTO;
 import com.SE2024.SocialBookStore.model.Book;
-import com.SE2024.SocialBookStore.model.BookAuthor;
-import com.SE2024.SocialBookStore.model.UserProfile;
 import com.SE2024.SocialBookStore.service.BookRequestService;
 import com.SE2024.SocialBookStore.service.BookService;
 import com.SE2024.SocialBookStore.service.UserProfileService;
 
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,9 +32,6 @@ public class SocialBookViewsController {
     @Autowired
     UserProfileService userProfileService;
 
-    private static final Logger logger = LoggerFactory.getLogger(SocialBookViewsController.class);
-
-
     private String getAuthenticatedUsername(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
@@ -52,9 +42,7 @@ public class SocialBookViewsController {
 
     @GetMapping("/home")
     public String getHome(Model model) {
-        List<Book> books = bookService.showAvailableBooksToUser(getAuthenticatedUsername());
-
-        model.addAttribute("userBookOffers", books);
+        model.addAttribute("userBookOffers", bookService.showAvailableBooksToUser(getAuthenticatedUsername()));
 
         return "app/home";
     }
@@ -81,7 +69,10 @@ public class SocialBookViewsController {
     }
     
     @GetMapping("/search")
-    public String getSearch() {
+    public String getSearch(Model model) {
+
+        SearchFormDTO searchFormDTO = new SearchFormDTO();
+        model.addAttribute("searchForm", searchFormDTO);
         return "app/search";
     }
 
@@ -90,13 +81,10 @@ public class SocialBookViewsController {
                                     @RequestParam(name = "searchStrategy", required = false) int strategy, 
                                     @RequestParam(name = "authors", required = false) String authors, Model model) {
         
-        model.addAttribute("searchKeyword", keyword);
-        model.addAttribute("searchStrategy", strategy);
-        model.addAttribute("authors", authors);
-
-
-
-        model.addAttribute("userBookOffers", bookService.searchBooks(keyword, authors, strategy, getAuthenticatedUsername()));
+        SearchFormDTO searchFormDTO = new SearchFormDTO(keyword, strategy, authors);
+        
+        model.addAttribute("searchForm", searchFormDTO);
+        model.addAttribute("userBookOffers", bookService.searchBooks(searchFormDTO, getAuthenticatedUsername()));
         
         return "app/search";
     }   

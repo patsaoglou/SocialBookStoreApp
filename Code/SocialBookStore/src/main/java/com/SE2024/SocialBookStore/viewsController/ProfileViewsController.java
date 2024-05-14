@@ -9,10 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.SE2024.SocialBookStore.model.BookAuthor;
-import com.SE2024.SocialBookStore.model.BookRequest;
-import com.SE2024.SocialBookStore.model.Book;
-import com.SE2024.SocialBookStore.model.UserProfile;
+import com.SE2024.SocialBookStore.dtos.BookDTO;
 import com.SE2024.SocialBookStore.service.BookRequestService;
 import com.SE2024.SocialBookStore.service.BookService;
 import com.SE2024.SocialBookStore.service.UserProfileService;
@@ -20,12 +17,6 @@ import com.SE2024.SocialBookStore.service.UserProfileService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
 
 @Controller
 @RequestMapping("/app/profile")
@@ -40,8 +31,6 @@ public class ProfileViewsController {
     @Autowired
     BookRequestService bookRequestService;
     
-    private static final Logger logger = LoggerFactory.getLogger(ProfileViewsController.class);
-
     private String getAuthenticatedUsername(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
@@ -60,16 +49,16 @@ public class ProfileViewsController {
     @GetMapping("/make_offer")
     public String makeBookOffer(Model model) {
              
-        model.addAttribute("book", new Book());
+        model.addAttribute("book", new BookDTO());
 
         return "app/profile/make_offer";
     }
     
 
     @PostMapping("/make_offer_submit")
-    public String submitBookOffer(@ModelAttribute("book") Book newBook, @RequestParam("bookAuthors") String authors, Model model) {
+    public String submitBookOffer(@ModelAttribute("book") BookDTO newBook, Model model) {
 
-        bookService.addBookOffer(newBook, authors, getAuthenticatedUsername());        
+        bookService.addBookOffer(newBook, getAuthenticatedUsername());        
 
         return "redirect:/app/profile/my_book_offers";
     }

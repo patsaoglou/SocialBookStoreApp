@@ -86,7 +86,7 @@
     </div>
     <div class="mb-3">
       <label for="bookCategory" class="form-label">Book Authors (Separate with Commas)</label>
-      <input type="text" class="form-control" id="bookCategory" aria-describedby="bookCategoryHelp" placeholder="First Name Last Name" name="bookAuthors" required>
+      <input type="text" class="form-control" id="bookCategory" aria-describedby="bookCategoryHelp" placeholder="First Name Last Name" th:field="*{book.authorsFromForm}" required>
     </div>
 
     <button type="submit" class="btn btn-primary" >Submit</button>

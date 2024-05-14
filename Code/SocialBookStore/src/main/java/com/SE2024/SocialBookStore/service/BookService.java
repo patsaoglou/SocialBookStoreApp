@@ -2,20 +2,21 @@ package com.SE2024.SocialBookStore.service;
 
 import java.util.List;
 
-import com.SE2024.SocialBookStore.model.Book;
+import com.SE2024.SocialBookStore.dtos.BookDTO;
+import com.SE2024.SocialBookStore.dtos.SearchFormDTO;
 
 public interface BookService {
 
-    List<Book> retrieveBookOffers(String username);
-    Book addBookOffer(Book bookData, String authors, String username);
+    List<BookDTO> retrieveBookOffers(String username);
+    BookDTO addBookOffer(BookDTO bookData, String username);
     void deleteBookOffer(String username, int bookId);
 
-    Book getBookById(int bookId);
-    List<Book> showAvailableBooksToUser(String username);
+    BookDTO getBookById(int bookId);
+    List<BookDTO> showAvailableBooksToUser(String username);
 
-    List<Book> searchBooks(String keyword, String authors ,int strategy, String username);
-    List<Book> recommendBooksByFavouriteCategories(String username);
-    List<Book> recommendBooksByFavouriteBookAuthors(String username);
+    List<BookDTO> searchBooks(SearchFormDTO searchForm, String username);
+    List<BookDTO> recommendBooksByFavouriteCategories(String username);
+    List<BookDTO> recommendBooksByFavouriteBookAuthors(String username);
 
     
 } 

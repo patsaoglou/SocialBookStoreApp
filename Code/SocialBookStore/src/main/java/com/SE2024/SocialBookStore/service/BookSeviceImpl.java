@@ -6,10 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,17 +17,17 @@ import com.SE2024.SocialBookStore.dao.BookCategoryDAO;
 import com.SE2024.SocialBookStore.dao.BookDAO;
 import com.SE2024.SocialBookStore.dao.BookRequestDAO;
 import com.SE2024.SocialBookStore.dao.UserProfileDAO;
+import com.SE2024.SocialBookStore.dtos.BookDTO;
+import com.SE2024.SocialBookStore.dtos.SearchFormDTO;
+import com.SE2024.SocialBookStore.mappers.BookAuthorMapper;
+import com.SE2024.SocialBookStore.mappers.BookMapper;
 import com.SE2024.SocialBookStore.model.Book;
 import com.SE2024.SocialBookStore.model.BookAuthor;
 import com.SE2024.SocialBookStore.model.BookCategory;
-import com.SE2024.SocialBookStore.model.BookRequest;
 import com.SE2024.SocialBookStore.model.UserProfile;
 
 @Service
 public class BookSeviceImpl implements BookService {
-
-    private static final Logger logger = LoggerFactory.getLogger(BookSeviceImpl.class);
-
     @Autowired
     BookDAO bookDAO;
 
@@ -47,9 +45,11 @@ public class BookSeviceImpl implements BookService {
 
     SearchStrategy searchStrategy;
 
-    public Book addBookOffer(Book bookData, String authors, String username) {
+    public BookDTO addBookOffer(BookDTO bookDTO, String username) {
 
-        List<String> authorList = Arrays.asList(authors.split(","));
+        Book bookData = BookMapper.toEntity(bookDTO);
+        
+        List<String> authorList = Arrays.asList(bookDTO.getAuthorsFromForm().split(","));
         Set<BookAuthor> bookAuthors = new HashSet();
 
         for (String author : authorList) {
@@ -71,7 +71,7 @@ public class BookSeviceImpl implements BookService {
         Book newBook = bookDAO.save(bookData);
         addBookToUser(newBook, username);
 
-        return newBook;
+        return BookMapper.toDTO(newBook);
     }
 
     private BookCategory addBookCategory(BookCategory bookCategory) {
@@ -128,24 +128,28 @@ public class BookSeviceImpl implements BookService {
         }
     }
 
-    public List<Book> retrieveBookOffers(String username) {
+    public List<BookDTO> retrieveBookOffers(String username) {
         UserProfileServiceValidator userValidator = new UserProfileServiceValidator(userProfileDAO);
         UserProfile user = userValidator.validateUsername(username);
 
-        return user.getBookOffers();
+        return user.getBookOffers().stream()
+            .map(BookMapper::toDTO)
+            .collect(Collectors.toList());
     }
 
-    public Book getBookById(int bookId) {
-        return bookDAO.findById(bookId);
+    public BookDTO getBookById(int bookId) {
+        return BookMapper.toDTO(bookDAO.findById(bookId));
     }
 
-    public List<Book> showAvailableBooksToUser(String username) {
+    public List<BookDTO> showAvailableBooksToUser(String username) {
         UserProfile user = userProfileDAO.findByUsername(username);
 
         List<Book> socialBooks = findBooksNotOfferedByUser(user.getBookOffers(), bookDAO.findAll());
         socialBooks = findByRequestedBookAndNotStatusOrRequester(socialBooks, user.getId());      
 
-        return socialBooks;
+        return socialBooks.stream()
+            .map(BookMapper::toDTO)
+            .collect(Collectors.toList());
     }
 
     public List<Book> findByRequestedBookAndNotStatusOrRequester(List<Book> userBooks, int userId) {
@@ -175,27 +179,33 @@ public class BookSeviceImpl implements BookService {
         return books;
     }
     
-    public List<Book> searchBooks(String keyword, String authors ,int strategy, String username){
+    public List<BookDTO> searchBooks(SearchFormDTO searchForm, String username){
+        
+        
         List<Book> searchBooks;
-        if (authors == null || authors.isEmpty()){
+        if (searchForm.getAuthors() == null || searchForm.getAuthors().isEmpty()){
             return null;
         }
 
         UserProfile user = userProfileDAO.findByUsername(username);
-        List<String> authorList = Arrays.asList(authors.split(","));
+        List<String> authorList = Arrays.asList(searchForm.getAuthors().split(","));
 
-        if (strategy == 1){
+        if (searchForm.getSearchStrategy() == 1){
             TemplateSearchStrategy exactSearch = new ExactSearchStrategy();
-            searchBooks = exactSearch.search(keyword, getAuthorsFromDAO(authorList), bookDAO);
+            searchBooks = exactSearch.search(searchForm.getSearchKeyword(), getAuthorsFromDAO(authorList), bookDAO);
             searchBooks = findBooksNotOfferedByUser(user.getBookOffers(), searchBooks);
             searchBooks = findByRequestedBookAndNotStatusOrRequester(searchBooks, user.getId());
-            return searchBooks;
-        }else if (strategy == 0){
+            return searchBooks.stream()
+                .map(BookMapper::toDTO)
+                .collect(Collectors.toList());
+        }else if (searchForm.getSearchStrategy() == 0){
             TemplateSearchStrategy approximateSearch = new ApproximateSearchStrategy();
-            searchBooks = approximateSearch.search(keyword, getAuthorsFromDAO(authorList), bookDAO);
+            searchBooks = approximateSearch.search(searchForm.getSearchKeyword(), getAuthorsFromDAO(authorList), bookDAO);
             searchBooks = findBooksNotOfferedByUser(user.getBookOffers(), searchBooks);
             searchBooks = findByRequestedBookAndNotStatusOrRequester(searchBooks, user.getId());
-            return searchBooks;
+            return searchBooks.stream()
+                .map(BookMapper::toDTO)
+                .collect(Collectors.toList());
         }
 
         
@@ -218,7 +228,7 @@ public class BookSeviceImpl implements BookService {
         return authorsFromDAO;
     }
 
-    public List<Book> recommendBooksByFavouriteCategories(String username){
+    public List<BookDTO> recommendBooksByFavouriteCategories(String username){
         List<Book> recommendedBooks = new ArrayList<>();
         Set<BookCategory> favouriteCategories = userProfileDAO.findByUsername(username).getFavouriteBookCategories();
 
@@ -229,11 +239,13 @@ public class BookSeviceImpl implements BookService {
         findBooksNotOfferedByUser(userProfileDAO.findByUsername(username).getBookOffers(), recommendedBooks);
         findByRequestedBookAndNotStatusOrRequester(recommendedBooks, userProfileDAO.findByUsername(username).getId());
         
-        return recommendedBooks;   
+        return recommendedBooks.stream()
+                .map(BookMapper::toDTO)
+                .collect(Collectors.toList());   
 
     }
 
-    public List<Book> recommendBooksByFavouriteBookAuthors(String username){
+    public List<BookDTO> recommendBooksByFavouriteBookAuthors(String username){
         List<Book> recommendedBooks = new ArrayList<>();
         Set<BookAuthor> favouriteAuthors = userProfileDAO.findByUsername(username).getFavouriteBookAuthors();
 
@@ -243,7 +255,9 @@ public class BookSeviceImpl implements BookService {
         findBooksNotOfferedByUser(userProfileDAO.findByUsername(username).getBookOffers(), recommendedBooks);
         findByRequestedBookAndNotStatusOrRequester(recommendedBooks,userProfileDAO.findByUsername(username).getId());
         
-        return recommendedBooks;   
+        return recommendedBooks.stream()
+                .map(BookMapper::toDTO)
+                .collect(Collectors.toList());   
     }
 
 }
