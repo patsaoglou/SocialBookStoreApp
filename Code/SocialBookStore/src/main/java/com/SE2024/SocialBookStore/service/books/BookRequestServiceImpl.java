@@ -1,7 +1,6 @@
-package com.SE2024.SocialBookStore.service;
+package com.SE2024.SocialBookStore.service.books;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import com.SE2024.SocialBookStore.mappers.BookRequestMapper;
 import com.SE2024.SocialBookStore.model.Book;
 import com.SE2024.SocialBookStore.model.BookRequest;
 import com.SE2024.SocialBookStore.model.UserProfile;
+import com.SE2024.SocialBookStore.service.userProfile.UserProfileServiceValidator;
 
 @Service
 public class BookRequestServiceImpl implements BookRequestService {

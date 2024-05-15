@@ -1,4 +1,4 @@
-package com.SE2024.SocialBookStore.service;
+package com.SE2024.SocialBookStore.service.search;
 
 import java.util.List;
 

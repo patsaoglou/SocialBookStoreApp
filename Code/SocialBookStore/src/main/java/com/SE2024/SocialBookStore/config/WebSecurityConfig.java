@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.SE2024.SocialBookStore.service.UserServiceImpl;
+import com.SE2024.SocialBookStore.service.userAuth.UserServiceImpl;
 
 
 @Configuration

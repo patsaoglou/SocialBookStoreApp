@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.SE2024.SocialBookStore.dtos.UserProfileDTO;
 import com.SE2024.SocialBookStore.model.User;
-import com.SE2024.SocialBookStore.model.UserProfile;
-import com.SE2024.SocialBookStore.service.UserProfileService;
-import com.SE2024.SocialBookStore.service.UserService;
+import com.SE2024.SocialBookStore.service.userAuth.UserService;
+import com.SE2024.SocialBookStore.service.userProfile.UserProfileService;
 
 
 @Controller
@@ -39,7 +38,7 @@ public class AuthViewsController {
     }
 
     @PostMapping("/register_user_submit")
-    public String registerUser(@ModelAttribute("user") User user, @ModelAttribute("userProfile") UserProfileDTO userProfile, Model model) {
+    public String registerUser(@ModelAttribute User user, @ModelAttribute UserProfileDTO userProfile, Model model) {
         
         if(userService.isUserPresent(user)){
 
@@ -71,7 +70,7 @@ public class AuthViewsController {
     }
 
     @PostMapping("/register_admin_submit")
-    public String RegisterAdmin(@ModelAttribute("user") User user, Model model) {
+    public String RegisterAdmin(@ModelAttribute User user, Model model) {
 
         if(userService.isUserPresent(user)){
             model.addAttribute("successMessage", "Admin already registered!");

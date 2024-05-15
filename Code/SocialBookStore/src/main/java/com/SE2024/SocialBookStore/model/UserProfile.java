@@ -32,19 +32,19 @@ public class UserProfile {
     @Column(name="telephone")
 	private String telephone;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "userOffersBook",
                joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userProfileId"),
                inverseJoinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"))
     private List <Book> bookOffers;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "userPrefersAuthor",
                 joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userProfileId"),
                 inverseJoinColumns = @JoinColumn(name = "bookAuthorId", referencedColumnName = "bookAuthorId"))
     private  Set<BookAuthor> favouriteBookAuthors;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "userPrefersCategory",
                 joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userProfileId"),
                 inverseJoinColumns = @JoinColumn(name = "bookCategoryId", referencedColumnName = "bookCategoryId"))

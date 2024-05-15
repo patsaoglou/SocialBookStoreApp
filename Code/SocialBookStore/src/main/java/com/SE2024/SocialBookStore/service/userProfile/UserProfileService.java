@@ -1,4 +1,4 @@
-package com.SE2024.SocialBookStore.service;
+package com.SE2024.SocialBookStore.service.userProfile;
 
 import com.SE2024.SocialBookStore.dtos.UserProfileDTO;
 

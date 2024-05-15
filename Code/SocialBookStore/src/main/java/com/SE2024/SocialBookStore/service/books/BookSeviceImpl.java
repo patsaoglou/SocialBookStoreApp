@@ -1,4 +1,4 @@
-package com.SE2024.SocialBookStore.service;
+package com.SE2024.SocialBookStore.service.books;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,12 +19,15 @@ import com.SE2024.SocialBookStore.dao.BookRequestDAO;
 import com.SE2024.SocialBookStore.dao.UserProfileDAO;
 import com.SE2024.SocialBookStore.dtos.BookDTO;
 import com.SE2024.SocialBookStore.dtos.SearchFormDTO;
-import com.SE2024.SocialBookStore.mappers.BookAuthorMapper;
 import com.SE2024.SocialBookStore.mappers.BookMapper;
 import com.SE2024.SocialBookStore.model.Book;
 import com.SE2024.SocialBookStore.model.BookAuthor;
 import com.SE2024.SocialBookStore.model.BookCategory;
 import com.SE2024.SocialBookStore.model.UserProfile;
+import com.SE2024.SocialBookStore.service.search.ApproximateSearchStrategy;
+import com.SE2024.SocialBookStore.service.search.ExactSearchStrategy;
+import com.SE2024.SocialBookStore.service.search.SearchStrategy;
+import com.SE2024.SocialBookStore.service.userProfile.UserProfileServiceValidator;
 
 @Service
 public class BookSeviceImpl implements BookService {
@@ -42,8 +45,6 @@ public class BookSeviceImpl implements BookService {
 
     @Autowired
     BookRequestDAO bookRequestDAO;
-
-    SearchStrategy searchStrategy;
 
     public BookDTO addBookOffer(BookDTO bookDTO, String username) {
 
@@ -191,7 +192,7 @@ public class BookSeviceImpl implements BookService {
         List<String> authorList = Arrays.asList(searchForm.getAuthors().split(","));
 
         if (searchForm.getSearchStrategy() == 1){
-            TemplateSearchStrategy exactSearch = new ExactSearchStrategy();
+            SearchStrategy exactSearch = new ExactSearchStrategy();
             searchBooks = exactSearch.search(searchForm.getSearchKeyword(), getAuthorsFromDAO(authorList), bookDAO);
             searchBooks = findBooksNotOfferedByUser(user.getBookOffers(), searchBooks);
             searchBooks = findByRequestedBookAndNotStatusOrRequester(searchBooks, user.getId());
@@ -199,7 +200,7 @@ public class BookSeviceImpl implements BookService {
                 .map(BookMapper::toDTO)
                 .collect(Collectors.toList());
         }else if (searchForm.getSearchStrategy() == 0){
-            TemplateSearchStrategy approximateSearch = new ApproximateSearchStrategy();
+            SearchStrategy approximateSearch = new ApproximateSearchStrategy();
             searchBooks = approximateSearch.search(searchForm.getSearchKeyword(), getAuthorsFromDAO(authorList), bookDAO);
             searchBooks = findBooksNotOfferedByUser(user.getBookOffers(), searchBooks);
             searchBooks = findByRequestedBookAndNotStatusOrRequester(searchBooks, user.getId());

@@ -1,4 +1,4 @@
-package com.SE2024.SocialBookStore.service;
+package com.SE2024.SocialBookStore.service.userProfile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,12 +26,18 @@ public class UserProfileServiceImpl implements UserProfileService{
     
     @Autowired
     BookAuthorDAO bookAuthorDAO;
-    
+
+    public UserProfileServiceImpl(UserProfileDAO userProfileDAO, BookCategoryDAO bookCategoryDAO,
+            BookAuthorDAO bookAuthorDAO) {
+        this.userProfileDAO = userProfileDAO;
+        this.bookCategoryDAO = bookCategoryDAO;
+        this.bookAuthorDAO = bookAuthorDAO;
+    }
+
     public UserProfileDTO registerUserProfileData(UserProfileDTO userProfile){
         UserProfileServiceValidator validator = new UserProfileServiceValidator(userProfileDAO);
         validator.validateUserProfileObject(UserProfileMapper.toEntity(userProfile));
         UserProfile newUser = userProfileDAO.save(UserProfileMapper.toEntity(userProfile));
-
         
         return UserProfileMapper.toDTO(userProfileDAO.findByUsername(newUser.getUsername()));        
     }

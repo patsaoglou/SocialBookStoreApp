@@ -1,4 +1,4 @@
-package com.SE2024.SocialBookStore.service;
+package com.SE2024.SocialBookStore.service.userAuth;
 
 import java.util.Optional;
 
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		// orElseThrow method of Optional container that throws an exception if Optional result  is null
 		return userDAO.findByUsername(username).orElseThrow(
 	                ()-> new UsernameNotFoundException(
-	                        String.format("USER_NOT_FOUND %s", username)
+                            "USER_NOT_FOUND %s".formatted(username)
 	                ));
 	}
 }
