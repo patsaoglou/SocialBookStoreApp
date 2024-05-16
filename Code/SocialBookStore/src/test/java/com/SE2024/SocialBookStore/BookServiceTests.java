@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.SE2024.SocialBookStore.dao.UserProfileDAO;
 import com.SE2024.SocialBookStore.dtos.BookCategoryDTO;
 import com.SE2024.SocialBookStore.dtos.BookDTO;
+import com.SE2024.SocialBookStore.dtos.SearchFormDTO;
 import com.SE2024.SocialBookStore.dtos.UserProfileDTO;
 import com.SE2024.SocialBookStore.service.books.BookSeviceImpl;
 import com.SE2024.SocialBookStore.service.userProfile.UserProfileServiceImpl;
@@ -39,7 +39,7 @@ public class BookServiceTests {
         userProfileDTO.setAge(20);
         userProfileDTO.setTelephone("1234567890");
 
-        UserProfileDTO newUser = userProfileService.registerUserProfileData(userProfileDTO);
+        userProfileService.registerUserProfileData(userProfileDTO);
 
         UserProfileDTO userProfileDTO2 = new UserProfileDTO();
 
@@ -50,20 +50,20 @@ public class BookServiceTests {
         userProfileDTO2.setAge(20);
         userProfileDTO2.setTelephone("1234567890");
 
-        UserProfileDTO newUser2 = userProfileService.registerUserProfileData(userProfileDTO2);
+       userProfileService.registerUserProfileData(userProfileDTO2);
 
     }
 
     @Test
-    public void HappyaddBookOffer() {
+    public void happyDayaddBookOffer() {
         BookDTO bookDTO = new BookDTO();
 
         bookDTO.setBookTitle("TestBookTitle");
         bookDTO.setBookSummary("TestSummary");
-        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName, TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
         bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
 
-        BookDTO newBookOffer = bookService.addBookOffer(bookDTO, "TestUsername");
+        bookService.addBookOffer(bookDTO, "TestUsername");
 
         assertThat(bookService.retrieveBookOffers("TestUsername"))
                 .extracting(BookDTO::getBookTitle)
@@ -77,7 +77,7 @@ public class BookServiceTests {
 
         // Book title is empty
         bookDTO.setBookSummary("TestSummary");
-        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName, TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
         bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -89,12 +89,12 @@ public class BookServiceTests {
     }
 
     @Test
-    public void HappydeleteBookOffer() {
+    public void happyDaydeleteBookOffer() {
 
         BookDTO bookDTO = new BookDTO();
         bookDTO.setBookTitle("TestBookTitle");
         bookDTO.setBookSummary("TestSummary");
-        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName, TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
         bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
 
         BookDTO newBookOffer = bookService.addBookOffer(bookDTO, "TestUsername");
@@ -112,7 +112,7 @@ public class BookServiceTests {
         BookDTO bookDTO = new BookDTO();
         bookDTO.setBookTitle("TestBookTitle");
         bookDTO.setBookSummary("TestSummary");
-        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName, TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
         bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
 
         BookDTO newBookOffer = bookService.addBookOffer(bookDTO, "TestUsername");
@@ -131,10 +131,10 @@ public class BookServiceTests {
         BookDTO bookDTO = new BookDTO();
         bookDTO.setBookTitle("TestBookTitle");
         bookDTO.setBookSummary("TestSummary");
-        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName, TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
         bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
 
-        BookDTO newBookOffer = bookService.addBookOffer(bookDTO, "TestUsername");
+        bookService.addBookOffer(bookDTO, "TestUsername");
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             bookService.deleteBookOffer("TestUsername", 0);
@@ -145,12 +145,12 @@ public class BookServiceTests {
     }
 
     @Test
-    public void HappyretrieveBookOffers() {
+    public void happyDayretrieveBookOffers() {
 
         BookDTO bookDTO = new BookDTO();
         bookDTO.setBookTitle("TestBookTitle");
         bookDTO.setBookSummary("TestSummary");
-        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName, TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
         bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
 
         BookDTO newBookOffer = bookService.addBookOffer(bookDTO, "TestUsername");
@@ -162,12 +162,12 @@ public class BookServiceTests {
     }
 
     @Test
-    public void HappygetBookById() {
+    public void happyDaygetBookById() {
 
         BookDTO bookDTO = new BookDTO();
         bookDTO.setBookTitle("TestBookTitle");
         bookDTO.setBookSummary("TestSummary");
-        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName, TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
         bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
 
         BookDTO newBookOffer = bookService.addBookOffer(bookDTO, "TestUsername");
@@ -177,12 +177,12 @@ public class BookServiceTests {
     }
 
     @Test
-    public void showAvailableBooksToUser() {
+    public void happyDayshowAvailableBooksToUser() {
 
         BookDTO bookDTO = new BookDTO();
         bookDTO.setBookTitle("TestBookTitle");
         bookDTO.setBookSummary("TestSummary");
-        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName, TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
         bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
 
         BookDTO newBookOffer = bookService.addBookOffer(bookDTO, "TestUsername");
@@ -190,5 +190,189 @@ public class BookServiceTests {
         assertThat(bookService.showAvailableBooksToUser("TestUsername"))
                 .extracting(BookDTO::getId)
                 .doesNotContain(newBookOffer.getId());
+    }
+
+    @Test
+    public void happyDayWithResultsApproximateSearchBooks(){
+        BookDTO bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("First Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
+
+        bookService.addBookOffer(bookDTO, "TestUsername");
+        
+        bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("Second Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
+
+        bookService.addBookOffer(bookDTO, "TestUsername");
+
+        SearchFormDTO searchForm = new SearchFormDTO("Book Title", 0, "TestAuthorFirstName TestAuthorLastName");
+
+        assertThat(bookService.searchBooks(searchForm, "TestUsername2"))
+                .extracting(BookDTO::getBookTitle)
+                .contains("First Book Title", "Second Book Title");
+    }
+
+    @Test
+    public void happyDayWithoutResultsApproximateSearchBooks(){
+        BookDTO bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("First Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
+
+        bookService.addBookOffer(bookDTO, "TestUsername");
+        
+        bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("Second Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
+
+        bookService.addBookOffer(bookDTO, "TestUsername");
+
+        SearchFormDTO searchForm = new SearchFormDTO("Third", 0, "TestAuthorFirstName TestAuthorLastName");
+
+        assertThat(bookService.searchBooks(searchForm, "TestUsername2"))
+                .isEmpty();
+    }
+
+    @Test
+    public void happyDayWithResultsExactSearchBooks(){
+        BookDTO bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("First Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
+
+        bookService.addBookOffer(bookDTO, "TestUsername");
+        
+        bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("Second Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
+
+        bookService.addBookOffer(bookDTO, "TestUsername");
+
+        SearchFormDTO searchForm = new SearchFormDTO("First Book Title", 1, "TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+
+        assertThat(bookService.searchBooks(searchForm, "TestUsername2"))
+                .extracting(BookDTO::getBookTitle)
+                .contains("First Book Title");
+    }
+
+    @Test
+    public void happyDayWithoutResultsExactSearchBooks(){
+        BookDTO bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("First Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
+
+        bookService.addBookOffer(bookDTO, "TestUsername");
+        
+        bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("Second Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("TestCategory"));
+
+        bookService.addBookOffer(bookDTO, "TestUsername");
+
+        SearchFormDTO searchForm = new SearchFormDTO("First Book Title", 1, "TestAuthorFirstName TestAuthorLastName");
+
+        assertThat(bookService.searchBooks(searchForm, "TestUsername2"))
+                .isEmpty();
+    }
+
+    @Test
+    public void happyDayRecommendBooksByFavouriteCategories(){
+        BookDTO bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("First Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("Action"));
+
+        BookDTO actionBook1 = bookService.addBookOffer(bookDTO, "TestUsername");
+        
+        bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("Second Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("Action"));
+
+        BookDTO actionBook2 = bookService.addBookOffer(bookDTO, "TestUsername");
+
+        bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("Second Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("TestAuthorFirstName TestAuthorLastName,TestAuthor2FirstName TestAuthor2LastName");
+        bookDTO.setBookCategory(new BookCategoryDTO("Comedy"));
+
+        BookDTO comedyBook = bookService.addBookOffer(bookDTO, "TestUsername");
+
+        userProfileService.addFavouriteCategory("Action", "TestUsername2");
+
+        bookService.recommendBooksByFavouriteCategories("TestUsername2");
+
+        assertThat(bookService.recommendBooksByFavouriteCategories("TestUsername2"))
+                .extracting(BookDTO::getId)
+                .contains(actionBook1.getId(),actionBook2.getId())
+                .doesNotContain(comedyBook.getId());
+    }
+
+    @Test
+    public void happyDayRecommendBooksByFavouriteAuthor(){
+        BookDTO bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("First Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("Panteleimon Patsaoglou");
+        bookDTO.setBookCategory(new BookCategoryDTO("Action"));
+
+        BookDTO book1 = bookService.addBookOffer(bookDTO, "TestUsername");
+        
+        bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("Second Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("Panteleimon Patsaoglou,Ioannis Iatrakis");
+        bookDTO.setBookCategory(new BookCategoryDTO("Action"));
+
+        BookDTO book2 = bookService.addBookOffer(bookDTO, "TestUsername");
+
+        bookDTO = new BookDTO();
+
+        bookDTO.setBookTitle("Second Book Title");
+        bookDTO.setBookSummary("TestSummary");
+        bookDTO.setAuthorsFromForm("Ioannis Iatrakis,Athanasios Roudis");
+        bookDTO.setBookCategory(new BookCategoryDTO("Comedy"));
+
+        BookDTO book3 = bookService.addBookOffer(bookDTO, "TestUsername");
+
+        userProfileService.addFavouriteAuthor("Panteleimon Patsaoglou", "TestUsername2");
+
+        bookService.recommendBooksByFavouriteBookAuthors("TestUsername2");
+
+        assertThat(bookService.recommendBooksByFavouriteBookAuthors("TestUsername2"))
+                .extracting(BookDTO::getId)
+                .contains(book1.getId(),book2.getId())
+                .doesNotContain(book3.getId());
     }
 }

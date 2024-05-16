@@ -1,5 +1,7 @@
 package com.SE2024.SocialBookStore;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.SE2024.SocialBookStore.dao.UserProfileDAO;
+import com.SE2024.SocialBookStore.dtos.BookAuthorDTO;
+import com.SE2024.SocialBookStore.dtos.BookCategoryDTO;
 import com.SE2024.SocialBookStore.dtos.UserProfileDTO;
 import com.SE2024.SocialBookStore.model.UserProfile;
-import com.SE2024.SocialBookStore.service.userProfile.UserProfileServiceImpl;
+import com.SE2024.SocialBookStore.service.userProfile.UserProfileService;
 
 import jakarta.transaction.Transactional;
 
@@ -20,13 +24,13 @@ import jakarta.transaction.Transactional;
 public class UserProfileServiceTests {
 
     @Autowired
-    private UserProfileServiceImpl userProfileService;
+    private UserProfileService userProfileService;
 
     @Autowired
     private UserProfileDAO userProfileDAO;
 
     @Test
-    public void HappyDayRegisterUserProfileData(){
+    public void happyDayRegisterUserProfileData(){
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         
         userProfileDTO.setUsername("TestUser");
@@ -57,7 +61,7 @@ public class UserProfileServiceTests {
     }
 
     @Test
-    public void UsernameExistsRegisterUserProfileData(){
+    public void usernameExistsRegisterUserProfileData(){
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         
         userProfileDTO.setUsername("TestUser");
@@ -79,7 +83,7 @@ public class UserProfileServiceTests {
     }
 
     @Test
-    public void UsernameNullRegisterUserProfileData(){
+    public void usernameNullRegisterUserProfileData(){
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         
         // Username not passed
@@ -97,7 +101,7 @@ public class UserProfileServiceTests {
     }
 
     @Test
-    public void InvalidAgeRegisterUserProfileData(){
+    public void invalidAgeRegisterUserProfileData(){
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         
         userProfileDTO.setUsername("TestUser");
@@ -116,7 +120,7 @@ public class UserProfileServiceTests {
     }
 
     @Test
-    public void UserNameExistsRegisterUserProfileData(){
+    public void userNameExistsRegisterUserProfileData(){
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         
         userProfileDTO.setUsername("TestUser");
@@ -145,7 +149,7 @@ public class UserProfileServiceTests {
     }
     
     @Test
-    public void HappyDayRetrieveUserProfile(){
+    public void happyDayRetrieveUserProfile(){
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         
         userProfileDTO.setUsername("TestUser");
@@ -170,7 +174,7 @@ public class UserProfileServiceTests {
     }
 
     @Test
-    public void UserDoesNotExistRetrieveUserProfile(){
+    public void userDoesNotExistRetrieveUserProfile(){
         // Random Username without adding new user
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userProfileService.retrieveUserProfile("TestUser");
@@ -181,7 +185,50 @@ public class UserProfileServiceTests {
     }
 
     @Test
-    public void HappyDayAddFavouriteAuthor(){
+    public void happyDayAddFavouriteAuthor(){
+        UserProfileDTO userProfileDTO = new UserProfileDTO();
         
+        userProfileDTO.setUsername("TestUser");
+        userProfileDTO.setFirstName("TestFirstName");
+        userProfileDTO.setLastName("TestLastName");
+        userProfileDTO.setAddress("TestAddress 1");
+        userProfileDTO.setAge(20);
+        userProfileDTO.setTelephone("1234567890");
+
+        userProfileService.registerUserProfileData(userProfileDTO);
+
+        userProfileService.addFavouriteAuthor("Test Author1", "TestUser");
+        userProfileService.addFavouriteAuthor("Test Author2", "TestUser");
+
+        userProfileDTO = userProfileService.retrieveUserProfile("TestUser");
+        
+        assertThat(userProfileDTO.getFavouriteBookAuthors())
+            .extracting(BookAuthorDTO::toStringAuthorName)
+            .contains("Test Author1", "Test Author2");
+
+    }
+
+    @Test
+    public void happyDayAddFavouriteCategory(){
+        UserProfileDTO userProfileDTO = new UserProfileDTO();
+        
+        userProfileDTO.setUsername("TestUser");
+        userProfileDTO.setFirstName("TestFirstName");
+        userProfileDTO.setLastName("TestLastName");
+        userProfileDTO.setAddress("TestAddress 1");
+        userProfileDTO.setAge(20);
+        userProfileDTO.setTelephone("1234567890");
+
+        userProfileService.registerUserProfileData(userProfileDTO);
+
+        userProfileService.addFavouriteCategory("Action", "TestUser");
+        userProfileService.addFavouriteCategory("Science Fiction", "TestUser");
+
+        userProfileDTO = userProfileService.retrieveUserProfile("TestUser");
+        
+        assertThat(userProfileDTO.getFavouriteBookCategories())
+            .extracting(BookCategoryDTO::getCategoryName)
+            .contains("Action", "Science Fiction");
+
     }
 }
