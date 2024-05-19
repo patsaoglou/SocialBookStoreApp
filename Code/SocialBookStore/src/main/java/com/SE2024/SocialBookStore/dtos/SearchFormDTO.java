@@ -14,7 +14,6 @@ public class SearchFormDTO {
         this.authors = authors;
     }
 
-
     public String getSearchKeyword() {
         return searchKeyword;
     }

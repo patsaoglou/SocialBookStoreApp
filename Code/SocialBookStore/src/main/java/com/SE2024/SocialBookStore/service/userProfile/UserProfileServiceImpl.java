@@ -84,7 +84,4 @@ public class UserProfileServiceImpl implements UserProfileService{
         profile.addFavouriteBookCategory(categoryFromDAO);
         userProfileDAO.save(profile);
     }
-
-
-
 }

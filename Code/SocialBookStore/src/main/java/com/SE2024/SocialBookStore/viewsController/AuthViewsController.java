@@ -14,7 +14,6 @@ import com.SE2024.SocialBookStore.model.User;
 import com.SE2024.SocialBookStore.service.userAuth.UserService;
 import com.SE2024.SocialBookStore.service.userProfile.UserProfileService;
 
-
 @Controller
 public class AuthViewsController {
 

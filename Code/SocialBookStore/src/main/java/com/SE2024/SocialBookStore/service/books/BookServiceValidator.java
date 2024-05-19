@@ -12,7 +12,7 @@ import com.SE2024.SocialBookStore.model.BookCategory;
 @Service
 public class BookServiceValidator {
 
-    BookDAO bookDAO;
+    private BookDAO bookDAO;
     
     public BookServiceValidator(BookDAO bookDAO) {
         this.bookDAO = bookDAO;

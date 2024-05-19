@@ -7,7 +7,6 @@ import com.SE2024.SocialBookStore.model.Book;
 
 public class ExactSearchStrategy extends TemplateSearchStrategy{
 
-
     @Override
     public List<Book> makeInitialListOfBooks(String keyword) {
          return bookDao.findByBookTitle(keyword);

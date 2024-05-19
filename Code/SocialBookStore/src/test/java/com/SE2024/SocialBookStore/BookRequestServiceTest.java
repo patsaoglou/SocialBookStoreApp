@@ -85,7 +85,7 @@ public class BookRequestServiceTest {
 
 
     @Test
-    public void UserRequestOwnedBookRequestBook(){
+    public void userRequestOwnedBookRequestBook(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             bookRequestService.requestBook(addedBook.getId(), "TestUser1");
         });
@@ -95,7 +95,7 @@ public class BookRequestServiceTest {
     }
 
     @Test
-    public void BookIdNotExistsRequestBook(){
+    public void bookIdNotExistsRequestBook(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             bookRequestService.requestBook(0, "TestUser2");
         });

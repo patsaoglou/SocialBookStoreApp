@@ -8,7 +8,7 @@ import com.SE2024.SocialBookStore.model.UserProfile;
 @Service
 public class UserProfileServiceValidator {
 
-    UserProfileDAO userProfileDAO;
+    private UserProfileDAO userProfileDAO;
 
     public UserProfileServiceValidator(UserProfileDAO userProfileDAO) {
         this.userProfileDAO = userProfileDAO;
