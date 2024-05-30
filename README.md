@@ -2,8 +2,6 @@
 
 Welcome to the Online Social Bookstore project! This application is designed to allow individuals to exchange used books for free. Users can create accounts, offer books, request books, and manage their book lists through an intuitive and user-friendly interface.
 
-![home](https://github.com/patsaoglou/SocialBookStoreAPP/assets/93339707/f9d98aec-70a7-4adf-8c8d-af3a453c60b2)
-
 ## Table of Contents
 
 - [Project Overview](#project-overview)
@@ -14,6 +12,8 @@ Welcome to the Online Social Bookstore project! This application is designed to 
   - [Non-Functional Requirements](#non-functional-requirements)
   - [Technical Requirements](#technical-requirements)
 - [Getting Started](#getting-started)
+
+![home](https://github.com/patsaoglou/SocialBookStoreAPP/assets/93339707/f9d98aec-70a7-4adf-8c8d-af3a453c60b2)
 
 ## Project Overview
 
