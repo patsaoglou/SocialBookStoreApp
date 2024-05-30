@@ -8,14 +8,12 @@ Welcome to the Online Social Bookstore project! This application is designed to 
 
 - [Project Overview](#project-overview)
 - [Features](#features)
-- [Getting Started](#getting-started)
 - [Development Process](#development-process)
 - [Requirements](#requirements)
   - [Functional Requirements](#functional-requirements)
   - [Non-Functional Requirements](#non-functional-requirements)
   - [Technical Requirements](#technical-requirements)
-- [Contributing](#contributing)
-- [License](#license)
+- [Getting Started](#getting-started)
 
 ## Project Overview
 
@@ -140,15 +138,5 @@ MySQL is used as the database for the application. You can download and install 
    spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
    spring.datasource.username=your_mysql_username
    spring.datasource.password=your_mysql_password
-
-## Contributing
-
-We welcome contributions to the Online Social Bookstore project! If you're interested in contributing, please fork the repository and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
 
 Thank you for checking out the Online Social Bookstore project! We hope this application helps foster a community of book lovers who can share and enjoy books together.
