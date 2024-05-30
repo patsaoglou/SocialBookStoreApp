@@ -28,8 +28,8 @@ The objective of this project is to develop an online social bookstore applicati
 - **Book Requests:** Search for and request books from other users.
 - **Book Recommendations:** Receive book recommendations based on user preferences.
 - **User Interaction:** Contact other users to arrange book exchanges.
-  
-![register](https://github.com/patsaoglou/SocialBookStoreAPP/assets/93339707/e18718f6-4544-4e7f-a112-16db9f50093a)
+
+![register](https://github.com/patsaoglou/SocialBookStoreAPP/assets/93339707/7196e8c4-a00e-4f7f-bed1-082fff3d812f)
 
 ## Development Process
 
@@ -139,4 +139,5 @@ MySQL is used as the database for the application. You can download and install 
    spring.datasource.username=your_mysql_username
    spring.datasource.password=your_mysql_password
 
+## Thank You
 Thank you for checking out the Online Social Bookstore project! We hope this application helps foster a community of book lovers who can share and enjoy books together.
