@@ -1,6 +1,7 @@
 # Online Social Bookstore Application
 
 Welcome to the Online Social Bookstore project! This application is designed to allow individuals to exchange used books for free. Users can create accounts, offer books, request books, and manage their book lists through an intuitive and user-friendly interface.
+
 ![home](https://github.com/patsaoglou/SocialBookStoreAPP/assets/93339707/f9d98aec-70a7-4adf-8c8d-af3a453c60b2)
 
 ## Table of Contents
@@ -19,6 +20,7 @@ Welcome to the Online Social Bookstore project! This application is designed to 
 ## Project Overview
 
 The objective of this project is to develop an online social bookstore application that facilitates the free exchange of used books among users. Users can create profiles, offer books they no longer need, request books they are interested in, and interact with other users to arrange book exchanges.
+
 ![Book Offer Details](https://github.com/patsaoglou/SocialBookStoreAPP/assets/93339707/84a6171f-3cf7-462f-88a7-81c41b646ea8)
 
 ## Features
@@ -28,6 +30,7 @@ The objective of this project is to develop an online social bookstore applicati
 - **Book Requests:** Search for and request books from other users.
 - **Book Recommendations:** Receive book recommendations based on user preferences.
 - **User Interaction:** Contact other users to arrange book exchanges.
+  
 ![register](https://github.com/patsaoglou/SocialBookStoreAPP/assets/93339707/e18718f6-4544-4e7f-a112-16db9f50093a)
 
 ## Development Process
@@ -52,6 +55,7 @@ This project follows the Scrum development process. The team plans and executes 
    - Search for books by title and author
    - Make requests for books found in search results
    - Browse recommended book offers
+  
 ![myrequests](https://github.com/patsaoglou/SocialBookStoreAPP/assets/93339707/cd31c3d5-7fd9-4c36-b27c-2ed685bb1f78)
 
 ### Non-Functional Requirements
@@ -97,6 +101,7 @@ To ensure the application is easily extendable and maintainable, it is designed 
 2. **Search Strategies:**
    - **Exact Search:** Produces a list of books with titles and authors that exactly match the query.
    - **Approximate Search:** Produces a list of books where the title contains the query and the authors include at least one of the specified authors.
+   
 ![search](https://github.com/patsaoglou/SocialBookStoreAPP/assets/93339707/c7c5577b-1718-4a0a-96a5-472870766c5f)
 
 ### Design Patterns
