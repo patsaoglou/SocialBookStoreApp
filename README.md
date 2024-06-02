@@ -140,4 +140,4 @@ MySQL is used as the database for the application. You can download and install 
    spring.datasource.password=your_mysql_password
 
 ## Thank You
-Thank you for checking out the Online Social Bookstore project! We hope this application helps foster a community of book lovers who can share and enjoy books together.
+Thank you for checking out the Online Social Bookstore project!
